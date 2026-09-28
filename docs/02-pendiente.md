@@ -5,7 +5,13 @@ La web está construida para no inventar nada (brief §21). Donde falta un dato 
 
 Ordenado por impacto en la confianza de un cliente potencial.
 
-## 1. Fotografías de Victor (máxima prioridad)
+## 1. Fotografías de Victor
+
+**Hecho:** hay una foto de estudio (B/N) recortada en tres encuadres: hero (vertical), "sobre mí"
+(apaisada, con los focos) y CTA final (cerca). Mejora recomendada: 1–2 fotos distintas (por ejemplo
+trabajando con un cliente o delante de un dashboard) para no repetir la misma sesión en toda la web.
+
+### Especificación original
 
 La web está diseñada alrededor de tu cara. Sin fotos pierde gran parte de su fuerza.
 

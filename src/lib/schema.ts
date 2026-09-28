@@ -18,7 +18,7 @@ export const personNode = () => ({
   description:
     'Growth Partner para e-commerce y empresas high-ticket. Trabaja adquisición, conversión, retención, SEO, automatización e IA como un único sistema orientado a generar más negocio.',
   url: abs('/sobre-mi'),
-  // PENDIENTE: añadir `image` cuando exista la fotografía profesional.
+  image: abs('/victor-chifoni.jpg'),
   sameAs: [SITE.linkedin],
   address: {
     '@type': 'PostalAddress',

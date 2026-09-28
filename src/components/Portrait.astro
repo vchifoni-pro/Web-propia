@@ -80,6 +80,11 @@ const hints: Record<Props['variant'], string> = {
     object-fit: cover;
   }
 
+  /* La foto "trabajando" es horizontal: se muestra apaisada. */
+  .portrait--about:has(.portrait__img) {
+    aspect-ratio: 16 / 10;
+  }
+
   .portrait__placeholder {
     position: absolute;
     inset: 0;

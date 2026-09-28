@@ -133,7 +133,34 @@ const sectors = [
     }
 
     .hero__visual :global(.portrait) {
-      aspect-ratio: 5 / 5.2;
+      aspect-ratio: 4 / 5;
+    }
+
+    /* En móvil la tarjeta se compacta en una fila para no tapar la cara. */
+    .hero__card .hero__flow {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.25rem;
+    }
+
+    .hero__card .hero__flow li {
+      justify-content: center;
+      min-width: 0;
+      padding: 0.4rem 0.15rem;
+      font-size: clamp(0.62rem, 2.6vw, 0.8rem);
+      white-space: nowrap;
+    }
+
+    .hero__card .hero__flow li::before {
+      display: none;
+    }
+
+    .hero__card .hero__card-foot {
+      display: none;
+    }
+
+    .hero__visual .hero__card {
+      padding: 0.7rem;
+      gap: 0.5rem;
     }
   }
 
@@ -166,9 +193,9 @@ const sectors = [
     }
 
     .hero__card {
-      left: -2.5rem;
+      left: -3rem;
       right: auto;
-      bottom: 1.5rem;
+      bottom: -2rem;
       width: 250px;
       padding: 1rem;
     }
