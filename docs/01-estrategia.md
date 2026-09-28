@@ -116,16 +116,17 @@ Se elige **/capacidades** frente a /servicios: "servicios" empuja a vender pieza
 
 ## 7. Dirección visual
 
-**"Cuaderno de operaciones"**: la estética de alguien que dibuja el sistema de tu empresa en una
-pizarra y luego lo construye. Papel cálido, tinta, un único color de señal.
+**"Modo noche"** (actualizado a petición de Victor): grafito profundo, texto marfil y un único color de
+señal. Las bandas destacadas se elevan un tono sobre el fondo y un halo naranja muy sutil ilumina el hero.
 
 | Token | Valor | Uso |
 |---|---|---|
-| `--paper` | `#F3F1EC` | Fondo base (blanco roto cálido) |
-| `--ink` | `#111110` | Texto y secciones oscuras |
-| `--graphite` | `#5D5B55` | Texto secundario (contraste AA sobre paper) |
-| `--line` | `#D9D5CC` | Divisores, bordes del grid |
-| `--signal` | `#FF4F1F` | **Único acento.** CTA, datos clave, flujo activo |
+| `--paper` | `#0A0A09` | Fondo base |
+| `--band` | `#111110` | Bandas destacadas |
+| `--ink` | `#EDEAE3` | Texto (16,5:1 sobre fondo) |
+| `--graphite` | `#9E9B92` | Texto secundario (7,1:1) |
+| `--line` | `#262521` | Divisores, bordes del grid |
+| `--signal` | `#FF5A26` | **Único acento.** CTA, datos clave, flujo activo (texto oscuro encima, 6,4:1) |
 
 Reglas: el naranja señal nunca decora, siempre indica *acción* o *dato*. Nada de degradados de "IA".
 La tecnología se ve en diagramas, flujos y datos monoespaciados.

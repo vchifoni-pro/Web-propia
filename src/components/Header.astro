@@ -89,9 +89,7 @@ const isCurrent = (href: string) => current === href || current.startsWith(`${hr
       transform 0.5s var(--ease-out);
   }
 
-  .site-header[data-tone='dark']:not(.is-scrolled):not(.is-open) {
-    color: var(--paper);
-  }
+
 
   .site-header.is-scrolled {
     background: color-mix(in srgb, var(--paper) 82%, transparent);
@@ -104,9 +102,7 @@ const isCurrent = (href: string) => current === href || current.startsWith(`${hr
     transform: translateY(-100%);
   }
 
-  .site-header.is-open {
-    color: var(--paper);
-  }
+
 
   .site-header__inner {
     height: 100%;
@@ -144,14 +140,9 @@ const isCurrent = (href: string) => current === href || current.startsWith(`${hr
 
   .brand:hover .brand__mark {
     background: var(--signal);
-    color: var(--ink);
+    color: var(--on-signal);
   }
 
-  .site-header[data-tone='dark']:not(.is-scrolled) .brand__mark,
-  .site-header.is-open .brand__mark {
-    background: var(--paper);
-    color: var(--ink);
-  }
 
   .brand__role {
     color: var(--graphite);

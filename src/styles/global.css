@@ -1,6 +1,7 @@
 /* ==========================================================================
    Victor Chifoni — sistema visual
-   Papel cálido, tinta y un único color de señal.
+   Modo noche: grafito profundo, texto marfil y un único color de señal.
+   Los nombres de los tokens son semánticos: --paper = fondo, --ink = texto.
    ========================================================================== */
 
 @import '@fontsource-variable/geist';
@@ -9,21 +10,23 @@
 
 :root {
   /* Color */
-  --paper: #f3f1ec;
-  --paper-2: #ebe8e1;
-  --paper-3: #e2ded5;
-  --ink: #111110;
-  --ink-2: #1c1c1a;
-  --ink-3: #2a2a27;
-  --graphite: #5d5b55;
+  --paper: #0a0a09; /* fondo */
+  --paper-2: #141412; /* superficie elevada / hover */
+  --paper-3: #1d1d1a;
+  --band: #111110; /* bandas destacadas (antes secciones oscuras) */
+  --ink: #edeae3; /* texto */
+  --ink-2: #1a1a17; /* tarjetas dentro de bandas */
+  --ink-3: #252521;
+  --graphite: #9e9b92; /* texto secundario (AA sobre fondo) */
   --graphite-inv: #a3a098;
-  --line: #d9d5cc;
-  --line-inv: #34332f;
-  --signal: #ff4f1f;
-  --signal-ink: #c2340b; /* señal con contraste AA sobre papel para texto pequeño */
-  --signal-soft: #ffe3d8;
-  --ok: #1f7a4d;
-  --error: #c2261b;
+  --line: #262521;
+  --line-inv: #2d2c28;
+  --signal: #ff5a26;
+  --signal-ink: #ff7a4a; /* señal para texto pequeño sobre fondo oscuro */
+  --on-signal: #0a0a09; /* texto sobre relleno naranja */
+  --signal-soft: #3a1a10;
+  --ok: #4cc38a;
+  --error: #ff6b5e;
 
   /* Tipografía */
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -52,7 +55,7 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur: 0.7s;
 
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -81,7 +84,10 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--paper);
+  background:
+    radial-gradient(1100px 620px at 85% -8%, color-mix(in srgb, var(--signal) 9%, transparent), transparent 62%),
+    var(--paper);
+  background-repeat: no-repeat;
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: var(--step-0);
@@ -149,7 +155,7 @@ button {
 
 ::selection {
   background: var(--signal);
-  color: var(--ink);
+  color: var(--on-signal);
 }
 
 :focus-visible {
@@ -325,13 +331,10 @@ main > .section {
 }
 
 .dark {
-  background: var(--ink);
-  color: var(--paper);
-  color-scheme: dark;
-}
-
-.dark ::selection {
+  background: var(--band);
   color: var(--ink);
+  color-scheme: dark;
+  border-block: 1px solid var(--line);
 }
 
 .rule {
@@ -460,6 +463,11 @@ main > .section {
 
 .btn:hover,
 .btn:focus-visible {
+  color: var(--on-signal);
+}
+
+.btn--signal:hover,
+.btn--signal:focus-visible {
   color: var(--ink);
 }
 
@@ -474,7 +482,7 @@ main > .section {
   height: 1.75rem;
   border-radius: 50%;
   background: var(--signal);
-  color: var(--ink);
+  color: var(--on-signal);
   transition:
     transform 0.5s var(--ease-out),
     background-color 0.3s;
@@ -489,7 +497,7 @@ main > .section {
 
 .btn--signal {
   --btn-bg: var(--signal);
-  --btn-fg: var(--ink);
+  --btn-fg: var(--on-signal);
 }
 
 .btn--signal::before {
@@ -508,13 +516,12 @@ main > .section {
 }
 
 .dark .btn--ghost {
-  --btn-fg: var(--paper);
   box-shadow: inset 0 0 0 1px var(--line-inv);
 }
 
-.dark .btn:not(.btn--signal):not(.btn--ghost) {
-  --btn-bg: var(--paper);
-  --btn-fg: var(--ink);
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  box-shadow: none;
 }
 
 .btn[disabled],

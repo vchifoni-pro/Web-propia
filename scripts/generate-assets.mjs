@@ -21,17 +21,17 @@ const fonts = `
 *{margin:0;box-sizing:border-box}`;
 
 const og = `<html><head><style>${fonts}
-body{width:1200px;height:630px;background:#f3f1ec;color:#111110;font-family:G;padding:64px 72px;display:flex;flex-direction:column;justify-content:space-between;
-background-image:repeating-linear-gradient(0deg,transparent 0 39px,#e2ded5 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,#e2ded5 39px 40px)}
-.top{display:flex;justify-content:space-between;align-items:center;font-family:M;font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:#5d5b55}
-.brand{display:flex;align-items:center;gap:16px;color:#111110}
-.mark{width:48px;height:48px;border-radius:50%;background:#111110;color:#f3f1ec;display:grid;place-items:center;font-weight:700;font-size:16px}
+body{width:1200px;height:630px;background:#0a0a09;color:#edeae3;font-family:G;padding:64px 72px;display:flex;flex-direction:column;justify-content:space-between;
+background-image:radial-gradient(700px 400px at 90% 0%,rgba(255,90,38,.14),transparent 70%),repeating-linear-gradient(0deg,transparent 0 39px,#1a1a17 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,#1a1a17 39px 40px)}
+.top{display:flex;justify-content:space-between;align-items:center;font-family:M;font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:#9e9b92}
+.brand{display:flex;align-items:center;gap:16px;color:#edeae3}
+.mark{width:48px;height:48px;border-radius:50%;background:#edeae3;color:#0a0a09;display:grid;place-items:center;font-weight:700;font-size:16px}
 .dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:#ff4f1f;margin-right:12px}
 h1{font-size:92px;line-height:.95;letter-spacing:-.05em;font-weight:520;max-width:980px}
-em{font-family:S;font-weight:400;color:#d93a0f;letter-spacing:-.02em}
+em{font-family:S;font-weight:400;color:#ff7a4a;letter-spacing:-.02em}
 .foot{display:flex;gap:14px;font-family:M;font-size:18px;text-transform:uppercase;letter-spacing:.03em}
-.foot span{padding:10px 16px;border:1px solid #111110;border-radius:999px;background:#f3f1ec}
-.foot span.s{background:#ff4f1f;border-color:#ff4f1f}
+.foot span{padding:10px 16px;border:1px solid #3a3934;border-radius:999px;background:#0a0a09}
+.foot span.s{background:#ff5a26;border-color:#ff5a26;color:#0a0a09}
 </style></head><body>
 <div class="top"><div class="brand"><span class="mark">VC</span>Victor Chifoni</div><div><span class="dot"></span>Growth Partner</div></div>
 <h1>Me incorporo a tu empresa para que genere más <em>negocio.</em></h1>

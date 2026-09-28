@@ -262,7 +262,7 @@ const action = endpoint || `mailto:${SITE.email}`;
   }
 
   .field select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23111110' stroke-width='1.6'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23edeae3' stroke-width='1.6'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     padding-right: 2.5rem;
@@ -294,7 +294,7 @@ const action = endpoint || `mailto:${SITE.email}`;
     outline: none;
     border-color: var(--ink);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--signal) 30%, transparent);
-    background: #fff;
+    background: var(--paper-2);
   }
 
   .field [aria-invalid='true'] {
@@ -472,7 +472,7 @@ const action = endpoint || `mailto:${SITE.email}`;
     height: 3.5rem;
     border-radius: 50%;
     background: var(--signal);
-    color: var(--ink);
+    color: var(--on-signal);
     animation: pop 0.6s var(--ease-out);
   }
 

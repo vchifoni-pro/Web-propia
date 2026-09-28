@@ -172,13 +172,14 @@ const sectors = [
     bottom: 0.75rem;
     padding: 0.85rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--ink) 92%, transparent);
+    background: color-mix(in srgb, var(--paper) 78%, transparent);
+    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: var(--paper);
+    color: var(--ink);
     display: grid;
     gap: 0.7rem;
-    box-shadow: 0 20px 40px -20px rgb(0 0 0 / 0.4);
+    box-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.7);
   }
 
   @media (min-width: 960px) {
@@ -233,6 +234,7 @@ const sectors = [
     border-radius: 50%;
     background: var(--signal);
     animation: pulse 1.8s var(--ease-in-out) infinite;
+    color: var(--on-signal);
   }
 
   .hero__flow {
@@ -340,6 +342,7 @@ const sectors = [
     height: 5px;
     background: var(--signal);
     border-radius: 50%;
+    color: var(--on-signal);
   }
 
   @keyframes marquee {
