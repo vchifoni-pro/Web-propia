@@ -2,6 +2,8 @@
 import { publishedCases } from '../data/cases';
 import Counter from './Counter.astro';
 import Icon from './Icon.astro';
+import BrandLogo from './BrandLogo.astro';
+import { brandForCase } from '../data/brands';
 
 interface Props {
   headingLevel?: 'h2' | 'h3';
@@ -28,6 +30,7 @@ const cases = publishedCases();
             <span class="case__label">{c.metric.label}</span>
           </span>
           <div class="case__body">
+            {brandForCase(c.slug) && <BrandLogo brand={brandForCase(c.slug)!} size="sm" class="case__logo" fallback={false} />}
             <div class="case__client">
               <Heading class="case__name">{c.client}</Heading>
               <span class="mono muted">{c.sector}</span>
@@ -125,6 +128,10 @@ const cases = publishedCases();
   .case__body {
     display: grid;
     gap: 0.9rem;
+  }
+
+  .case__body :global(.case__logo) {
+    margin-bottom: 0.25rem;
   }
 
   .case__client {

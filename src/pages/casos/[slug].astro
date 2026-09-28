@@ -4,6 +4,8 @@ import PageHead from '../../components/PageHead.astro';
 import Counter from '../../components/Counter.astro';
 import FinalCta from '../../components/FinalCta.astro';
 import Icon from '../../components/Icon.astro';
+import BrandLogo from '../../components/BrandLogo.astro';
+import { brandForCase } from '../../data/brands';
 import { publishedCases, type Case } from '../../data/cases';
 import { abs, breadcrumbNode, ids } from '../../lib/schema';
 
@@ -21,6 +23,7 @@ interface Props {
 }
 const { c, next } = Astro.props;
 const path = `/casos/${c.slug}`;
+const brand = brandForCase(c.slug);
 const crumbs = [
   { name: 'Casos', path: '/casos' },
   { name: c.client, path },
@@ -44,6 +47,7 @@ const article = {
   <article>
     <PageHead eyebrow={`${c.client} · ${c.sector}`} title={c.title} crumbs={crumbs}>
       <p class="lead summary" data-reveal style="--i:2">{c.summary}</p>
+      {brand && <BrandLogo brand={brand} size="lg" class="case-logo" fallback={false} />}
     </PageHead>
 
     <section class="facts-wrap" aria-label="Datos del caso">

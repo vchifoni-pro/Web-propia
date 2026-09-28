@@ -1,0 +1,100 @@
+---
+import { BRANDS } from '../data/brands';
+import BrandLogo from './BrandLogo.astro';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Marcas con las que he trabajado' } = Astro.props;
+---
+
+<section class="logos" aria-labelledby="logos-title">
+  <div class="wrap">
+    <h2 id="logos-title" class="label muted logos__title">{title}</h2>
+    <ul role="list" class="logos__grid">
+      {
+        BRANDS.map((b, i) => (
+          <li data-reveal style={`--i:${i}`}>
+            {b.caseSlug ? (
+              <a href={`/casos/${b.caseSlug}`} class="logos__item" aria-label={`${b.name}: ver caso`}>
+                <BrandLogo brand={b} />
+                <span class="logos__meta mono">{b.sector} · ver caso</span>
+              </a>
+            ) : (
+              <div class="logos__item">
+                <BrandLogo brand={b} />
+                <span class="logos__meta mono">{b.sector}</span>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .logos {
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+
+  .logos__title {
+    font-size: var(--step--1);
+    margin-bottom: 1.25rem;
+  }
+
+  .logos__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  @media (min-width: 700px) {
+    .logos__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .logos__grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  .logos__grid > li {
+    background: var(--paper);
+  }
+
+  /* Con 5 marcas en 2 columnas, la última ocupa la fila entera. */
+  @media (max-width: 699px) {
+    .logos__grid > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .logos__item {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.75rem;
+    min-height: 8.5rem;
+    height: 100%;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  a.logos__item:hover {
+    background: var(--paper-2);
+  }
+
+  .logos__meta {
+    font-size: 0.66rem;
+    color: var(--graphite);
+  }
+</style>

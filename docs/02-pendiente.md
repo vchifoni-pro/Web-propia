@@ -20,6 +20,16 @@ sustituyen al placeholder automáticamente, sin tocar código.
 
 Evitar: fotos de stock, fondo de oficina genérica, brazos cruzados.
 
+## 1b. Logos de clientes
+
+Archivos en `src/assets/logos/` (SVG preferible, o PNG/WebP transparente). El nombre debe coincidir
+con el slug de `src/data/brands.ts`: `tr-muebles`, `the-colchon-company`, `farmacia-gambin`,
+`beanywood`, `3rgonomics`. Mientras falten, se muestra el nombre en tipografía.
+
+- [ ] Confirmar si TR Muebles es el cliente del caso "Confor de Inmuebles" (+300.000 €). Si lo es,
+      renombrar el caso y enlazarlo en `brands.ts` con `caseSlug`.
+- [ ] Permiso de Beanywood y 3rgonomics para mostrar su logo.
+
 ## 2. Permisos de clientes
 
 Antes de publicar, confirmar **por escrito** con cada cliente que puedes mostrar su nombre y la cifra.

@@ -44,6 +44,19 @@ for (const v of ['hero', 'about', 'cta']) {
   if (!photos.some((f) => f.startsWith(`${v}.`))) hits.push(`foto: falta src/assets/victor/${v}.(jpg|png|webp|avif)`);
 }
 
+// Logos de marcas.
+const logos = (() => {
+  try {
+    return readdirSync(join(root, 'assets/logos'));
+  } catch {
+    return [];
+  }
+})();
+const brands = readFileSync(join(root, 'data/brands.ts'), 'utf8');
+for (const [, slug] of brands.matchAll(/slug: '([^']+)'/g)) {
+  if (!logos.some((f) => f.replace(/\.[^.]+$/, '') === slug)) hits.push(`logo: falta src/assets/logos/${slug}.(svg|png|webp)`);
+}
+
 if (hits.length) {
   console.log(`\n${hits.length} elementos pendientes antes de publicar:\n`);
   hits.forEach((h) => console.log(`  • ${h}`));

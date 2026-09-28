@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import CaseList from '../../components/CaseList.astro';
 import FinalCta from '../../components/FinalCta.astro';
+import LogoStrip from '../../components/LogoStrip.astro';
 import { publishedCases } from '../../data/cases';
 import { abs, breadcrumbNode } from '../../lib/schema';
 
@@ -40,6 +41,8 @@ const itemList = {
       </p>
     </div>
   </section>
+
+  <LogoStrip />
 
   <FinalCta title="¿Quieres que el siguiente caso sea el tuyo?" />
 </Base>

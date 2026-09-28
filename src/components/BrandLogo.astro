@@ -1,0 +1,88 @@
+---
+/**
+ * Logo de una marca cliente.
+ * Usa src/assets/logos/<slug>.* si existe; si no, el nombre en tipografía
+ * (identificado como pendiente para no confundirlo con el logo real).
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Brand } from '../data/brands';
+
+interface Props {
+  brand: Brand;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  /** Sin archivo de logo: mostrar el nombre (true) o no pintar nada (false). */
+  fallback?: boolean;
+}
+
+const { brand, size = 'md', class: className, fallback = true } = Astro.props;
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{svg,png,webp,jpg,jpeg,avif}', {
+  eager: true,
+});
+const match = Object.entries(files).find(([path]) => path.split('/').pop()?.replace(/\.[^.]+$/, '') === brand.slug);
+const logo = match?.[1].default;
+const heights = { sm: 28, md: 40, lg: 56 };
+---
+
+{(logo || fallback) && (
+<span class:list={['brand-logo', `brand-logo--${size}`, { 'brand-logo--text': !logo }, className]} data-pending-logo={logo ? undefined : brand.slug}>
+  {
+    logo ? (
+      <Image src={logo} alt={brand.name} height={heights[size] * 2} class="brand-logo__img" loading="lazy" />
+    ) : (
+      <span class="brand-logo__word">{brand.name}</span>
+    )
+  }
+</span>
+)}
+
+<style>
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    height: var(--logo-h, 40px);
+    max-width: 100%;
+  }
+
+  .brand-logo--sm {
+    --logo-h: 28px;
+  }
+
+  .brand-logo--lg {
+    --logo-h: 56px;
+  }
+
+  .brand-logo__img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    filter: grayscale(1) contrast(1.1);
+    opacity: 0.75;
+    transition:
+      filter 0.4s,
+      opacity 0.4s;
+  }
+
+  :global(a:hover) .brand-logo__img,
+  .brand-logo:hover .brand-logo__img {
+    filter: none;
+    opacity: 1;
+  }
+
+  .brand-logo--text {
+    height: auto;
+    min-height: var(--logo-h);
+  }
+
+  .brand-logo__word {
+    font-weight: 620;
+    font-size: calc(var(--logo-h) * 0.5);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-wrap: balance;
+    color: color-mix(in srgb, currentColor 72%, transparent);
+  }
+</style>

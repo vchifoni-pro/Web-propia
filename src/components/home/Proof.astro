@@ -2,6 +2,8 @@
 import { publishedCases } from '../../data/cases';
 import Icon from '../Icon.astro';
 import Counter from '../Counter.astro';
+import BrandLogo from '../BrandLogo.astro';
+import { brandForCase } from '../../data/brands';
 
 const cases = publishedCases().slice(0, 3);
 ---
@@ -26,6 +28,7 @@ const cases = publishedCases().slice(0, 3);
               </span>
               <span class="proof__label">{c.metric.label}</span>
               <span class="proof__client">
+                {brandForCase(c.slug) && <BrandLogo brand={brandForCase(c.slug)!} size="sm" fallback={false} />}
                 <span>{c.client}</span>
                 <span class="mono muted">{c.sector}</span>
               </span>
@@ -112,7 +115,8 @@ const cases = publishedCases().slice(0, 3);
 
   .proof__client {
     display: grid;
-    gap: 0.15rem;
+    gap: 0.35rem;
+    justify-items: start;
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid var(--line);
