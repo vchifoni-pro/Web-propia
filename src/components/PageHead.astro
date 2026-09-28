@@ -1,0 +1,101 @@
+---
+/** Cabecera de páginas interiores con migas de pan visibles (coinciden con el BreadcrumbList). */
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  crumbs?: { name: string; path: string }[];
+}
+const { eyebrow, title: rawTitle, lead, crumbs = [] } = Astro.props;
+// Evita cortes feos en palabras con guion ("e-commerce", "high-ticket").
+const title = rawTitle.replace(/\b[\wáéíóúñ]+-[\wáéíóúñ]+\b/gi, (m) => `<span class="nowrap">${m}</span>`);
+---
+
+<header class="page-head">
+  <div class="wrap">
+    {
+      crumbs.length > 0 && (
+        <nav aria-label="Migas de pan" class="crumbs mono">
+          <ol role="list">
+            <li>
+              <a href="/">Inicio</a>
+            </li>
+            {crumbs.map((c, i) => (
+              <li>
+                {i === crumbs.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={c.path}>{c.name}</a>}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+    <p class="eyebrow" data-reveal="fade">{eyebrow}</p>
+    <h1 class="page-head__title">
+      <span class="line-mask"><span set:html={title} /></span>
+    </h1>
+    {
+      lead && (
+        <p class="lead page-head__lead" data-reveal style="--i:2">
+          {lead}
+        </p>
+      )
+    }
+    <slot />
+  </div>
+</header>
+
+<style>
+  .page-head {
+    padding-top: clamp(2rem, 1rem + 4vw, 5rem);
+    padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+  }
+
+  .page-head .wrap {
+    display: grid;
+    gap: clamp(1.25rem, 1rem + 1vw, 2rem);
+  }
+
+  .page-head__title {
+    font-size: clamp(2.6rem, 1.3rem + 5.6vw, 6.5rem);
+    max-width: 16ch;
+  }
+
+  .page-head__title :global(em) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--signal-ink);
+    letter-spacing: -0.02em;
+  }
+
+  .page-head__lead {
+    max-width: 52ch;
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--graphite);
+  }
+
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    opacity: 0.5;
+  }
+
+  .crumbs a {
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .crumbs [aria-current] {
+    color: var(--ink);
+  }
+</style>

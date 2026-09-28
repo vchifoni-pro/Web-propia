@@ -1,0 +1,150 @@
+---
+import { METHOD } from '../data/content';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Primero entiendo tu negocio. Después construimos lo que necesita.' } = Astro.props;
+---
+
+<section class="method section" aria-labelledby="method-title" data-method>
+  <div class="wrap method__grid">
+    <div class="method__head">
+      <p class="eyebrow">Método</p>
+      <h2 id="method-title">{title}</h2>
+      <div class="method__progress" aria-hidden="true">
+        {METHOD.map((m) => <span data-method-dot>{m.n}</span>)}
+      </div>
+    </div>
+
+    <ol role="list" class="method__steps">
+      {
+        METHOD.map((m) => (
+          <li class="step" data-method-step>
+            <span class="step__n mono">{m.n}</span>
+            <div class="step__body">
+              <h3>{m.title}</h3>
+              <p class="lead">{m.body}</p>
+              <ul role="list" class="tags">
+                {m.items.map((it) => (
+                  <li class="tag">{it}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .method__grid {
+    display: grid;
+    gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+
+  @media (min-width: 1000px) {
+    .method__grid {
+      grid-template-columns: 1fr 1.25fr;
+      align-items: start;
+    }
+
+    .method__head {
+      position: sticky;
+      top: calc(var(--header-h) + 2.5rem);
+    }
+  }
+
+  .method__head {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .method__head h2 {
+    font-size: var(--step-4);
+    max-width: 16ch;
+  }
+
+  .method__progress {
+    display: none;
+  }
+
+  @media (min-width: 1000px) {
+    .method__progress {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+  }
+
+  .method__progress span {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--graphite);
+    transition:
+      background-color 0.4s,
+      color 0.4s,
+      border-color 0.4s;
+  }
+
+  .method__progress span.is-active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .method__progress span.is-current {
+    background: var(--signal);
+    color: var(--ink);
+    border-color: var(--signal);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding: clamp(1.75rem, 1.25rem + 2vw, 3rem) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .step:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .step__n {
+    font-size: 0.8rem;
+    color: var(--signal-ink);
+    padding-top: 0.55rem;
+  }
+
+  .step__body {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .step h3 {
+    font-size: var(--step-4);
+    letter-spacing: -0.045em;
+  }
+
+  .step .lead {
+    color: var(--ink);
+  }
+
+  :global(.js) .step {
+    transition: opacity 0.5s;
+  }
+
+  @media (min-width: 1000px) {
+    :global(.js) .step:not(.is-current) {
+      opacity: 0.4;
+    }
+  }
+</style>

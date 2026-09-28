@@ -1,0 +1,112 @@
+---
+import { CTA, SITE } from '../config/site';
+import Icon from './Icon.astro';
+import Portrait from './Portrait.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Cuéntame cómo funciona tu negocio.',
+  text = 'En 30 minutos podemos detectar dónde están algunas de tus mayores oportunidades de crecimiento. Sin presentación comercial: hablamos de tu negocio.',
+} = Astro.props;
+---
+
+<section class="final section" aria-labelledby="final-title">
+  <div class="wrap">
+    <div class="final__card dark">
+      <div class="final__copy">
+        <p class="eyebrow">Siguiente paso</p>
+        <h2 id="final-title" data-reveal>{title}</h2>
+        <p class="lead" data-reveal style="--i:1">{text}</p>
+        <div class="final__actions" data-reveal style="--i:2">
+          <a href="/contacto" class="btn btn--signal">
+            {CTA.primary}
+            <span class="btn__arrow"><Icon name="arrow" size={14} /></span>
+          </a>
+          <a href={SITE.linkedin} class="link" rel="me noopener" target="_blank">
+            <Icon name="linkedin" size={18} /> LinkedIn
+          </a>
+          <a href={`mailto:${SITE.email}`} class="link">
+            <Icon name="mail" size={18} /> {SITE.email}
+          </a>
+        </div>
+      </div>
+      <div class="final__photo">
+        <Portrait variant="cta" sizes="(min-width: 960px) 28vw, 80vw" />
+        <p class="final__sign mono">Victor Chifoni · Te responde la misma persona que va a trabajar contigo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final {
+    padding-top: 0;
+  }
+
+  .final__card {
+    display: grid;
+    gap: 2.5rem;
+    padding: clamp(1.5rem, 1rem + 4vw, 5rem);
+    border-radius: calc(var(--radius) * 1.5);
+    overflow: hidden;
+  }
+
+  @media (min-width: 960px) {
+    .final__card {
+      grid-template-columns: 1.5fr 0.8fr;
+      align-items: end;
+      gap: 4rem;
+    }
+  }
+
+  .final__copy {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .final h2 {
+    font-size: var(--step-5);
+    max-width: 14ch;
+  }
+
+  .final .lead {
+    max-width: 44ch;
+  }
+
+  .final__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .final__photo {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 380px;
+  }
+
+  .final__photo :global(.portrait__placeholder) {
+    background: var(--ink-3);
+    color: color-mix(in srgb, var(--paper) 14%, transparent);
+  }
+
+  .final__photo :global(.portrait__mono) {
+    color: color-mix(in srgb, var(--paper) 14%, transparent);
+  }
+
+  .final__photo :global(.portrait__hint) {
+    color: var(--graphite-inv);
+  }
+
+  .final__sign {
+    font-size: 0.68rem;
+    color: var(--graphite-inv);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+</style>

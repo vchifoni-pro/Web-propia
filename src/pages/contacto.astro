@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Portrait from '../components/Portrait.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../config/site';
+import { abs, breadcrumbNode, ids } from '../lib/schema';
+
+const crumbs = [{ name: 'Contacto', path: '/contacto' }];
+const contactPage = {
+  '@type': 'ContactPage',
+  url: abs('/contacto'),
+  name: 'Contacto — Victor Chifoni',
+  about: { '@id': ids.person },
+};
+
+const next = [
+  { t: 'Leo tu mensaje', d: 'Personalmente. Nadie filtra por mí.' },
+  { t: 'Te respondo', d: 'Si veo que puedo aportar, te propongo una llamada. Si no, te lo digo.' },
+  { t: '30 minutos', d: 'Hablamos de tu negocio y de dónde pueden estar las mayores oportunidades.' },
+];
+---
+
+<Base
+  title="Contacto: hablemos de tu negocio"
+  description="Cuéntame cómo funciona tu negocio. En 30 minutos podemos detectar dónde están algunas de tus mayores oportunidades de crecimiento."
+  schema={[breadcrumbNode(crumbs), contactPage]}
+>
+  <PageHead
+    eyebrow="Contacto"
+    title="Cuéntame cómo funciona tu <em>negocio</em>."
+    lead="En 30 minutos podemos detectar dónde están algunas de tus mayores oportunidades de crecimiento. Para que esa conversación sea útil, necesito entender un poco tu negocio antes."
+    crumbs={crumbs}
+  />
+
+  <section class="section contact" style="padding-top:0">
+    <div class="wrap contact__grid">
+      <div class="contact__form">
+        <ContactForm />
+      </div>
+
+      <aside class="contact__side" aria-label="Qué pasa después y contacto directo">
+        <div class="side-card">
+          <div class="side-card__who">
+            <Portrait variant="cta" class="side-card__photo" sizes="96px" />
+            <div>
+              <p class="side-card__name">Victor Chifoni</p>
+              <p class="mono muted">Te responde quien va a trabajar contigo</p>
+            </div>
+          </div>
+          <ol role="list" class="side-steps">
+            {
+              next.map((n, i) => (
+                <li>
+                  <span class="mono signal">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <p class="side-steps__t">{n.t}</p>
+                    <p class="muted">{n.d}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <div class="side-card">
+          <p class="label muted">¿Prefieres ir directo?</p>
+          <a href={`mailto:${SITE.email}`} class="direct-link">
+            <Icon name="mail" size={18} />
+            {SITE.email}
+          </a>
+          <a href={SITE.linkedin} class="direct-link" rel="me noopener" target="_blank">
+            <Icon name="linkedin" size={18} />
+            Escríbeme por LinkedIn
+          </a>
+          {
+            SITE.bookingUrl && (
+              <a href={SITE.bookingUrl} class="direct-link" rel="noopener" target="_blank">
+                <Icon name="arrow-up-right" size={18} />
+                Reservar llamada directamente
+              </a>
+            )
+          }
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (min-width: 1000px) {
+    .contact__grid {
+      grid-template-columns: 1.6fr 1fr;
+      gap: 5rem;
+    }
+
+    .contact__side {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .contact__side {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .side-card {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .side-card__who {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .side-card__who :global(.side-card__photo) {
+    width: 4rem;
+    flex: none;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .side-card__who :global(.portrait__note),
+  .side-card__who :global(.portrait__grid) {
+    display: none;
+  }
+
+  .side-card__who :global(.portrait__mono) {
+    font-size: 1.1rem;
+    transform: none;
+    color: var(--graphite);
+  }
+
+  .side-card__name {
+    font-weight: 560;
+  }
+
+  .side-card__who .mono {
+    font-size: 0.66rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .side-steps {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .side-steps li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.5rem;
+  }
+
+  .side-steps .mono {
+    font-size: 0.72rem;
+    padding-top: 0.2rem;
+  }
+
+  .side-steps__t {
+    font-weight: 540;
+  }
+
+  .side-steps .muted {
+    font-size: 0.9rem;
+  }
+
+  .direct-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background: var(--paper-2);
+    text-decoration: none;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    transition: background-color 0.2s;
+  }
+
+  .direct-link:hover {
+    background: var(--paper-3);
+  }
+</style>

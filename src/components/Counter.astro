@@ -1,0 +1,14 @@
+---
+/** Cifra animada. El valor final está en el HTML: sin JS o con reduced motion se ve directamente. */
+interface Props {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+}
+const { value, prefix = '', suffix = '' } = Astro.props;
+const formatted = new Intl.NumberFormat('es-ES').format(value);
+---
+
+<span class="counter" data-counter={value} data-prefix={prefix} data-suffix={suffix}
+  >{prefix}<span data-counter-value>{formatted}</span>{suffix}</span
+>

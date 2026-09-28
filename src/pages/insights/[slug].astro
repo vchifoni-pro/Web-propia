@@ -1,0 +1,107 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { abs, breadcrumbNode, ids } from '../../lib/schema';
+import { formatDate, getInsights } from '../../lib/insights';
+
+export async function getStaticPaths() {
+  const posts = await getInsights();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const path = `/insights/${post.id}`;
+const crumbs = [
+  { name: 'Insights', path: '/insights' },
+  { name: post.data.title, path },
+];
+
+const article = {
+  '@type': 'Article',
+  '@id': `${abs(path)}#articulo`,
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  inLanguage: 'es-ES',
+  articleSection: post.data.topic,
+  author: { '@id': ids.person },
+  publisher: { '@id': ids.person },
+  mainEntityOfPage: abs(path),
+};
+---
+
+<Base title={post.data.title} description={post.data.description} ogType="article" schema={[breadcrumbNode(crumbs), article]}>
+  <article>
+    <PageHead eyebrow={post.data.topic} title={post.data.title} lead={post.data.description} crumbs={crumbs}>
+      <p class="mono muted meta">
+        Victor Chifoni · <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        {post.data.updatedDate && <> · actualizado {formatDate(post.data.updatedDate)}</>}
+      </p>
+    </PageHead>
+    <div class="wrap post-body">
+      {
+        headings.filter((h) => h.depth === 2).length > 2 && (
+          <nav class="toc" aria-label="Índice">
+            <p class="label muted">Índice</p>
+            <ol>
+              {headings
+                .filter((h) => h.depth === 2)
+                .map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+            </ol>
+          </nav>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+  <FinalCta />
+</Base>
+
+<style>
+  .meta {
+    font-size: 0.72rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .post-body {
+    display: grid;
+    gap: 3rem;
+    padding-bottom: var(--section);
+  }
+
+  @media (min-width: 1000px) {
+    .post-body {
+      grid-template-columns: 240px 1fr;
+    }
+
+    .toc {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+      align-self: start;
+    }
+  }
+
+  .prose {
+    font-size: var(--step-1);
+    line-height: 1.6;
+  }
+
+  .toc ol {
+    display: grid;
+    gap: 0.5rem;
+    padding-left: 1.1rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+  }
+</style>

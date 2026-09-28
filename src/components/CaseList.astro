@@ -1,0 +1,179 @@
+---
+import { publishedCases } from '../data/cases';
+import Counter from './Counter.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  headingLevel?: 'h2' | 'h3';
+}
+const { headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const cases = publishedCases();
+---
+
+<ol role="list" class="cases">
+  {
+    cases.map((c, i) => (
+      <li data-reveal style={`--i:${i}`}>
+        <a href={`/casos/${c.slug}`} class="case">
+          <span class="case__idx mono">{String(i + 1).padStart(2, '0')}</span>
+          <span class="case__metric">
+            <span class="case__value">
+              {c.metric.value !== undefined ? (
+                <Counter value={c.metric.value} prefix={c.metric.prefix} suffix={c.metric.suffix} />
+              ) : (
+                c.metric.display
+              )}
+            </span>
+            <span class="case__label">{c.metric.label}</span>
+          </span>
+          <div class="case__body">
+            <div class="case__client">
+              <Heading class="case__name">{c.client}</Heading>
+              <span class="mono muted">{c.sector}</span>
+            </div>
+            <span class="case__headline">{c.headline}</span>
+            <span class="tags">
+              {c.areas.map((a) => (
+                <span class="tag">{a}</span>
+              ))}
+            </span>
+          </div>
+          <span class="case__go" aria-hidden="true">
+            <Icon name="arrow" size={20} />
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .cases {
+    border-top: 1px solid var(--line);
+  }
+
+  .case {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.75rem, 1.2rem + 2vw, 3rem) 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    isolation: isolate;
+  }
+
+  .case::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(var(--gutter) * -1);
+    z-index: -1;
+    background: var(--paper-2);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .case:hover::before {
+    transform: scaleY(1);
+  }
+
+  @media (min-width: 900px) {
+    .case {
+      grid-template-columns: 3rem minmax(0, 1.1fr) minmax(0, 1.4fr) 3.5rem;
+      align-items: start;
+      gap: 2rem;
+    }
+  }
+
+  .case__idx {
+    font-size: 0.72rem;
+    color: var(--graphite);
+    padding-top: 0.6rem;
+  }
+
+  @media (max-width: 899px) {
+    .case__idx {
+      display: none;
+    }
+  }
+
+  .case__metric {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .case__value {
+    font-size: var(--step-4);
+    font-weight: 520;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s;
+  }
+
+  .case:hover .case__value {
+    color: var(--signal-ink);
+  }
+
+  .case__label {
+    color: var(--graphite);
+    font-size: 0.9375rem;
+    max-width: 28ch;
+  }
+
+  .case__body {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .case__client {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+  }
+
+  .case__name {
+    font-size: var(--step-2);
+  }
+
+  .case__client .mono {
+    font-size: 0.7rem;
+  }
+
+  .case__headline {
+    font-size: var(--step-1);
+    line-height: 1.35;
+    max-width: 36ch;
+  }
+
+  .case__go {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.3s,
+      border-color 0.3s,
+      transform 0.5s var(--ease-out);
+  }
+
+  @media (max-width: 899px) {
+    .case__go {
+      position: absolute;
+      top: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+      right: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  .case:hover .case__go {
+    background: var(--signal);
+    border-color: var(--signal);
+    transform: translateX(4px);
+  }
+</style>

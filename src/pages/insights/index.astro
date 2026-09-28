@@ -1,0 +1,149 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE } from '../../config/site';
+import { breadcrumbNode } from '../../lib/schema';
+import { formatDate, getInsights } from '../../lib/insights';
+
+const crumbs = [{ name: 'Insights', path: '/insights' }];
+const posts = await getInsights();
+const topics = ['Growth', 'E-commerce', 'Publicidad', 'IA', 'Automatización', 'CRO', 'SEO', 'Negocio'];
+---
+
+<Base
+  title="Insights sobre growth, e-commerce e IA"
+  description="Análisis de Victor Chifoni sobre growth, e-commerce, publicidad, IA, automatización, CRO, SEO y negocio."
+  schema={[breadcrumbNode(crumbs)]}
+  noindex={posts.length === 0}
+>
+  <PageHead
+    eyebrow="Insights"
+    title="Lo que aprendo <em>creciendo</em> negocios."
+    lead="Análisis sobre growth, e-commerce, publicidad, IA, automatización, CRO, SEO y negocio. Pensados para quien toma decisiones, no para quien busca trucos."
+    crumbs={crumbs}
+  >
+    <ul role="list" class="tags topics" aria-label="Temas">
+      {topics.map((t) => <li class="tag">{t}</li>)}
+    </ul>
+  </PageHead>
+
+  <section class="section" style="padding-top:0" aria-label="Artículos">
+    <div class="wrap">
+      {
+        posts.length > 0 ? (
+          <ol role="list" class="posts">
+            {posts.map((p) => (
+              <li data-reveal>
+                <a href={`/insights/${p.id}`} class="post">
+                  <span class="mono muted">
+                    <time datetime={p.data.pubDate.toISOString()}>{formatDate(p.data.pubDate)}</time> · {p.data.topic}
+                  </span>
+                  <h2>{p.data.title}</h2>
+                  <p class="muted">{p.data.description}</p>
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div class="empty" data-reveal>
+            <div class="empty__viz" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <h2>Los primeros análisis están en preparación.</h2>
+            <p class="muted">
+              Prefiero publicar poco y útil. Mientras tanto, en LinkedIn puedes ver en qué estoy trabajando.
+            </p>
+            <a href={SITE.linkedin} class="btn btn--ghost" rel="me noopener" target="_blank">
+              <Icon name="linkedin" size={18} /> Sígueme en LinkedIn
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .topics {
+    margin-top: 0.5rem;
+  }
+
+  .posts {
+    border-top: 1px solid var(--line);
+  }
+
+  .post {
+    display: grid;
+    gap: 0.6rem;
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+
+  .post .mono {
+    font-size: 0.7rem;
+  }
+
+  .post h2 {
+    font-size: var(--step-3);
+    max-width: 26ch;
+    transition: color 0.2s;
+  }
+
+  .post:hover h2 {
+    color: var(--signal-ink);
+  }
+
+  .post p {
+    max-width: 60ch;
+  }
+
+  .empty {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    padding: clamp(2rem, 1.5rem + 3vw, 4rem);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+  }
+
+  .empty h2 {
+    font-size: var(--step-3);
+    max-width: 22ch;
+  }
+
+  .empty p {
+    max-width: 50ch;
+  }
+
+  .empty__viz {
+    display: grid;
+    gap: 0.5rem;
+    width: min(260px, 70%);
+  }
+
+  .empty__viz span {
+    height: 10px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--paper-2), var(--paper-3), var(--paper-2));
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  .empty__viz span:nth-child(2) {
+    width: 80%;
+  }
+
+  .empty__viz span:nth-child(3) {
+    width: 55%;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
+</style>

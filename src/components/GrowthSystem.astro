@@ -1,0 +1,362 @@
+---
+/**
+ * Sistema de crecimiento interactivo.
+ * Tablist accesible: sin JS se muestran todos los paneles; con JS, uno a la vez.
+ */
+import { STAGES } from '../data/system';
+---
+
+<div class="gs" data-growth-system>
+  <div class="gs__rail" role="tablist" aria-label="Partes del sistema de crecimiento" aria-orientation="vertical">
+    {
+      STAGES.map((s, i) => (
+        <button
+          type="button"
+          role="tab"
+          class="gs__tab"
+          id={`gs-tab-${s.id}`}
+          aria-controls={`gs-panel-${s.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          data-gs-tab
+        >
+          <span class="gs__node" aria-hidden="true" />
+          <span class="mono gs__idx">{s.index}</span>
+          <span class="gs__name">{s.name}</span>
+        </button>
+      ))
+    }
+    <div class="gs__goal" aria-hidden="true">
+      <span class="gs__node gs__node--goal" />
+      <span class="mono gs__idx">→</span>
+      <span class="gs__name">Crecimiento</span>
+    </div>
+    <span class="gs__pulse" aria-hidden="true" />
+  </div>
+
+  <div class="gs__panels">
+    {
+      STAGES.map((s, i) => (
+        <section
+          class="gs__panel"
+          role="tabpanel"
+          id={`gs-panel-${s.id}`}
+          aria-labelledby={`gs-tab-${s.id}`}
+          data-gs-panel
+          data-active={i === 0 ? 'true' : undefined}
+          tabindex="0"
+        >
+          <p class="mono gs__panel-idx">
+            {s.index} / {String(STAGES.length).padStart(2, '0')} · {s.name}
+          </p>
+          <h3 class="gs__question">{s.question}</h3>
+          <p class="gs__outcome">
+            <span class="mono">Objetivo</span>
+            {s.outcome}
+          </p>
+          <ul role="list" class="gs__caps">
+            {s.capabilities.map((c) => (
+              <li>{c}</li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .gs {
+    display: grid;
+    gap: 2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    padding: clamp(1rem, 0.5rem + 2vw, 2rem);
+  }
+
+  @media (min-width: 900px) {
+    .gs {
+      grid-template-columns: minmax(250px, 0.8fr) 2fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    }
+  }
+
+  /* Raíl */
+  .gs__rail {
+    position: relative;
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: -0.25rem;
+    padding: 0.25rem;
+  }
+
+  .gs__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .gs__rail {
+      flex-direction: column;
+      gap: 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+    }
+
+    .gs__rail::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 1.6rem;
+      bottom: 1.6rem;
+      width: 1px;
+      background: var(--line);
+    }
+  }
+
+  .gs__tab,
+  .gs__goal {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: none;
+    scroll-snap-align: start;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition:
+      background-color 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+
+  .gs__goal {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .gs__tab,
+    .gs__goal {
+      display: flex;
+      border: 0;
+      border-radius: 0;
+      background: none;
+      padding: 1rem 0;
+      font-size: var(--step-1);
+    }
+
+    .gs__tab + .gs__tab,
+    .gs__goal {
+      border-top: 1px solid transparent;
+    }
+  }
+
+  .gs__tab:hover {
+    border-color: var(--ink);
+  }
+
+  .gs__tab[aria-selected='true'] {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  @media (min-width: 900px) {
+    .gs__tab[aria-selected='true'] {
+      background: none;
+      color: var(--ink);
+    }
+
+    .gs__tab:not([aria-selected='true']) {
+      color: var(--graphite);
+    }
+
+    .gs__tab:not([aria-selected='true']):hover {
+      color: var(--ink);
+    }
+  }
+
+  .gs__node {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .gs__node {
+      display: block;
+      position: relative;
+      z-index: 1;
+      width: 23px;
+      height: 23px;
+      flex: none;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      transition:
+        border-color 0.3s,
+        box-shadow 0.4s;
+    }
+
+    .gs__node::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: var(--line);
+      transition:
+        background-color 0.3s,
+        transform 0.4s var(--ease-out);
+    }
+
+    .gs__tab[aria-selected='true'] .gs__node {
+      border-color: var(--signal);
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--signal) 18%, transparent);
+    }
+
+    .gs__tab[aria-selected='true'] .gs__node::after {
+      background: var(--signal);
+    }
+
+    .gs__node--goal {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .gs__node--goal::after {
+      background: var(--signal);
+    }
+
+    .gs__goal .gs__name {
+      font-weight: 600;
+    }
+  }
+
+  .gs__idx {
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+
+  /* Pulso: recorre el raíl, comunica flujo */
+  .gs__pulse {
+    display: none;
+  }
+
+  @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+    .gs__pulse {
+      display: block;
+      position: absolute;
+      left: 9px;
+      top: 1.6rem;
+      width: 5px;
+      height: 32px;
+      border-radius: 4px;
+      background: linear-gradient(transparent, var(--signal));
+      animation: gs-pulse 3.6s var(--ease-in-out) infinite;
+      pointer-events: none;
+    }
+  }
+
+  @keyframes gs-pulse {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(calc(var(--rail-h, 380px) - 32px));
+      opacity: 0;
+    }
+  }
+
+  /* Paneles */
+  .gs__panels {
+    display: grid;
+  }
+
+  :global(.js) .gs__panel {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.45s var(--ease-out),
+      transform 0.6s var(--ease-out),
+      visibility 0s 0.45s;
+  }
+
+  :global(.js) .gs__panel[data-active] {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  :global(html:not(.js)) .gs__panel + .gs__panel {
+    margin-top: 3rem;
+  }
+
+  .gs__panel {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+  }
+
+  .gs__panel:focus-visible {
+    outline-offset: 8px;
+  }
+
+  .gs__panel-idx {
+    font-size: 0.72rem;
+    color: var(--graphite);
+  }
+
+  .gs__question {
+    font-size: var(--step-3);
+    max-width: 22ch;
+  }
+
+  .gs__outcome {
+    display: grid;
+    gap: 0.35rem;
+    max-width: 48ch;
+    padding-left: 1rem;
+    border-left: 2px solid var(--signal);
+    font-size: var(--step-1);
+    line-height: 1.4;
+  }
+
+  .gs__outcome .mono {
+    font-size: 0.68rem;
+    color: var(--graphite);
+  }
+
+  .gs__caps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .gs__caps li {
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    background: var(--paper-2);
+    font-size: 0.9375rem;
+    font-weight: 460;
+  }
+</style>

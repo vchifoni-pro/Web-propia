@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import CaseList from '../../components/CaseList.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { publishedCases } from '../../data/cases';
+import { abs, breadcrumbNode } from '../../lib/schema';
+
+const crumbs = [{ name: 'Casos', path: '/casos' }];
+const cases = publishedCases();
+const itemList = {
+  '@type': 'ItemList',
+  name: 'Casos de crecimiento',
+  itemListElement: cases.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: abs(`/casos/${c.slug}`),
+    name: `${c.client}: ${c.title}`,
+  })),
+};
+---
+
+<Base
+  title="Casos de crecimiento"
+  description="Casos reales de crecimiento en e-commerce y empresas con venta online: Confor de Inmuebles, The Colchón Company y Farmacia Gambín. Contexto, papel y resultados."
+  schema={[breadcrumbNode(crumbs), itemList]}
+>
+  <PageHead
+    eyebrow="Casos"
+    title="Negocios que <em>crecieron</em>. Y por qué."
+    lead="No muestro logos de decoración. Cada caso explica de dónde partía el negocio, qué se hizo y qué cambió. Cuando una cifra no se puede explicar, no aparece."
+    crumbs={crumbs}
+  />
+
+  <section class="section" style="padding-top:0" aria-label="Listado de casos">
+    <div class="wrap">
+      <CaseList headingLevel="h2" />
+      <p class="note mono" data-reveal>
+        Nuevos casos en preparación. Se publican solo con permiso del cliente y datos verificables.
+      </p>
+    </div>
+  </section>
+
+  <FinalCta title="¿Quieres que el siguiente caso sea el tuyo?" />
+</Base>
+
+<style>
+  .note {
+    margin-top: 2rem;
+    font-size: 0.72rem;
+    color: var(--graphite);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+</style>

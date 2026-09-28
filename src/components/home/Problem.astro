@@ -1,0 +1,243 @@
+---
+/**
+ * "Probablemente no necesitas más marketing."
+ * Visualización: piezas sueltas que, al entrar en pantalla, se ordenan y conectan
+ * alrededor del negocio. El valor está en la conexión, no en las piezas.
+ */
+const pieces = [
+  { label: 'Google Ads', x0: 8, y0: 14, a: 200 },
+  { label: 'Meta Ads', x0: 70, y0: 6, a: 245 },
+  { label: 'Web / tienda', x0: 84, y0: 40, a: 290 },
+  { label: 'CRM', x0: 62, y0: 86, a: 335 },
+  { label: 'Email', x0: 16, y0: 70, a: 20 },
+  { label: 'Equipo comercial', x0: 40, y0: 30, a: 65 },
+  { label: 'Analytics', x0: 4, y0: 44, a: 110 },
+  { label: 'Proveedor SEO', x0: 34, y0: 92, a: 155 },
+].map((p) => {
+  const rad = (p.a * Math.PI) / 180;
+  return { ...p, x1: 50 + Math.cos(rad) * 36, y1: 50 + Math.sin(rad) * 38 };
+});
+---
+
+<section class="problem section" aria-labelledby="problem-title">
+  <div class="wrap problem__grid">
+    <div class="problem__copy">
+      <p class="eyebrow" data-reveal>El problema</p>
+      <h2 id="problem-title" data-reveal style="--i:1">
+        Probablemente no necesitas <em class="human">más</em> marketing.
+      </h2>
+      <div class="problem__text" data-reveal style="--i:2">
+        <p class="lead">
+          Tienes campañas, una web, un CRM, emails, comerciales y varias herramientas. Cada pieza tiene su responsable y
+          su informe.
+        </p>
+        <p>
+          Pero nadie mira el sistema completo: dónde se enfría el lead, qué producto deja margen de verdad, por qué el
+          tráfico no compra o cuántas horas se van en tareas que podría hacer una automatización.
+        </p>
+        <p><strong>Ahí es donde se pierde el dinero. Y ahí es donde empiezo yo.</strong></p>
+      </div>
+    </div>
+
+    <div class="problem__viz is-connected" data-connect aria-hidden="true">
+      <svg class="problem__lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {
+          pieces.map((p, i) => (
+            <line x1="50" y1="50" x2={p.x1} y2={p.y1} pathLength="1" style={`--i:${i}`} />
+          ))
+        }
+      </svg>
+      {
+        pieces.map((p, i) => (
+          <span
+            class="piece"
+            style={`--x0:${p.x0}%;--y0:${p.y0}%;--x1:${p.x1.toFixed(2)}%;--y1:${p.y1.toFixed(2)}%;--i:${i}`}
+          >
+            {p.label}
+          </span>
+        ))
+      }
+      <span class="core">
+        <span class="mono">Tu negocio</span>
+        <strong>Un sistema</strong>
+      </span>
+      <span class="problem__state mono">
+        <span class="off">Piezas aisladas</span>
+        <span class="on">Piezas conectadas</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem__grid {
+    display: grid;
+    gap: clamp(3rem, 2rem + 4vw, 5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 1000px) {
+    .problem__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .problem__copy {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .problem__copy h2 {
+    font-size: var(--step-5);
+    max-width: 12ch;
+  }
+
+  .problem__text {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 48ch;
+  }
+
+  .problem__text .lead {
+    color: var(--ink);
+  }
+
+  .problem__text p:not(.lead) {
+    color: var(--graphite);
+  }
+
+  .problem__text strong {
+    color: var(--ink);
+    font-weight: 560;
+  }
+
+  .problem__viz {
+    position: relative;
+    aspect-ratio: 1 / 0.92;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(circle at 50% 50%, var(--paper) 0 30%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent 0 23px, var(--line) 23px 24px),
+      repeating-linear-gradient(90deg, transparent 0 23px, var(--line) 23px 24px);
+    background-color: var(--paper-2);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .problem__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .problem__lines line {
+    stroke: var(--signal);
+    stroke-width: 0.28;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.9s var(--ease-out);
+    transition-delay: calc(0.6s + var(--i) * 70ms);
+  }
+
+  .is-connected .problem__lines line {
+    stroke-dashoffset: 0;
+  }
+
+  .piece {
+    position: absolute;
+    left: var(--x0);
+    top: var(--y0);
+    translate: -50% -50%;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    border: 1px dashed color-mix(in srgb, var(--ink) 35%, transparent);
+    background: var(--paper);
+    font-size: clamp(0.7rem, 2.6cqi, 0.875rem);
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      left 1.1s var(--ease-out),
+      top 1.1s var(--ease-out),
+      border-color 0.5s,
+      box-shadow 0.5s;
+    transition-delay: calc(var(--i) * 45ms);
+    z-index: 1;
+  }
+
+  .piece:nth-child(odd) {
+    rotate: -3deg;
+  }
+
+  .piece:nth-child(3n) {
+    rotate: 4deg;
+  }
+
+  .is-connected .piece {
+    left: var(--x1);
+    top: var(--y1);
+    rotate: 0deg;
+    border-style: solid;
+    border-color: var(--ink);
+    box-shadow: 0 6px 18px -10px rgb(0 0 0 / 0.35);
+  }
+
+  .core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    display: grid;
+    place-items: center;
+    gap: 0.1rem;
+    width: 30cqi;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    scale: 0.4;
+    opacity: 0;
+    transition:
+      scale 0.9s var(--ease-out) 0.5s,
+      opacity 0.5s 0.5s;
+    z-index: 2;
+    align-content: center;
+  }
+
+  .core .mono {
+    font-size: clamp(0.55rem, 2cqi, 0.7rem);
+    color: var(--graphite-inv);
+  }
+
+  .core strong {
+    font-size: clamp(0.8rem, 3.4cqi, 1.1rem);
+    font-weight: 540;
+    letter-spacing: -0.02em;
+  }
+
+  .is-connected .core {
+    scale: 1;
+    opacity: 1;
+  }
+
+  .problem__state {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.85rem;
+    font-size: 0.68rem;
+    color: var(--graphite);
+  }
+
+  .problem__state .on,
+  .is-connected .problem__state .off {
+    display: none;
+  }
+
+  .is-connected .problem__state .on {
+    display: inline;
+    color: var(--signal-ink);
+  }
+
+</style>

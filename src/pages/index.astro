@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Proof from '../components/home/Proof.astro';
+import Problem from '../components/home/Problem.astro';
+import Partner from '../components/home/Partner.astro';
+import GrowthSystem from '../components/GrowthSystem.astro';
+import CaseList from '../components/CaseList.astro';
+import AI from '../components/home/AI.astro';
+import Method from '../components/Method.astro';
+import About from '../components/home/About.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Base
+  title="Victor Chifoni — Growth Partner para e-commerce y high-ticket"
+  description="Me incorporo a tu empresa para que genere más negocio. Adquisición, conversión, automatización e IA trabajadas como un único sistema, para e-commerce y empresas high-ticket."
+  path="/"
+>
+  <Hero />
+  <Proof />
+  <Problem />
+  <Partner />
+
+  <section class="section" aria-labelledby="system-title">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div class="section-head__meta">
+          <span class="eyebrow">Sistema de crecimiento</span>
+          <a href="/capacidades" class="link mono">Todas las capacidades <Icon name="arrow" size={14} /></a>
+        </div>
+        <h2 id="system-title" data-reveal>No vendo servicios sueltos. Construyo el sistema que tu negocio necesita.</h2>
+        <p class="lead" data-reveal style="--i:1">
+          Cada capacidad tiene un lugar y una función. Elegimos las piezas después de entender dónde está la
+          oportunidad, no antes.
+        </p>
+      </div>
+      <div data-reveal style="--i:2">
+        <GrowthSystem />
+      </div>
+    </div>
+  </section>
+
+  <section class="section home-cases" aria-labelledby="cases-title">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div class="section-head__meta">
+          <span class="eyebrow">Casos</span>
+          <a href="/casos" class="link mono">Ver todos <Icon name="arrow" size={14} /></a>
+        </div>
+        <h2 id="cases-title" data-reveal>Resultados con contexto. No logos de decoración.</h2>
+        <p class="lead" data-reveal style="--i:1">
+          Cada caso explica de dónde partía el negocio, qué se hizo y qué cambió. Sin cifras que no se puedan explicar.
+        </p>
+      </div>
+      <CaseList />
+    </div>
+  </section>
+
+  <AI />
+  <Method />
+  <About />
+  <Faq />
+  <FinalCta />
+</Base>
+
+<style>
+  .section-head h2 {
+    font-size: var(--step-4);
+    max-width: 18ch;
+  }
+
+  .home-cases {
+    padding-top: 0;
+  }
+</style>

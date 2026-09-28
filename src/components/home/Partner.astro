@@ -1,0 +1,187 @@
+---
+import { VERSUS } from '../../data/content';
+
+const team = ['Dirección', 'Marketing', 'Ventas', 'Desarrollo', 'Proveedores'];
+---
+
+<section class="partner section dark" aria-labelledby="partner-title">
+  <div class="wrap">
+    <div class="section-head section-head--split">
+      <div class="section-head__meta">
+        <span class="eyebrow">Growth Partner</span>
+        <span class="mono muted">Proveedor vs. partner</span>
+      </div>
+      <h2 id="partner-title" data-reveal>
+        No necesitas otra agencia. Necesitas a alguien pensando en tu negocio <em class="human">contigo.</em>
+      </h2>
+      <p class="lead" data-reveal style="--i:1">
+        Me incorporo como una extensión de tu equipo. Entiendo cómo ganas dinero, qué productos importan, dónde se pierden
+        oportunidades. Y después decidimos qué herramientas hacen falta. No al revés.
+      </p>
+    </div>
+
+    <div class="partner__grid">
+      <div class="versus" role="table" aria-label="Diferencias entre un proveedor y un Growth Partner">
+        <div class="versus__row versus__row--head" role="row">
+          <span role="columnheader"><span class="visually-hidden">Aspecto</span></span>
+          <span role="columnheader" class="mono">Proveedor</span>
+          <span role="columnheader" class="mono signal">Growth Partner</span>
+        </div>
+        {
+          VERSUS.map((r, i) => (
+            <div class="versus__row" role="row" data-reveal style={`--i:${i}`}>
+              <span role="rowheader" class="versus__topic mono">{r.topic}</span>
+              <span role="cell" class="versus__vendor">{r.vendor}</span>
+              <span role="cell" class="versus__partner">{r.partner}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <aside class="direct" data-reveal style="--i:2" aria-labelledby="direct-title">
+        <p class="label muted">Relación directa</p>
+        <h3 id="direct-title">Trabajas conmigo. Sin intermediarios.</h3>
+        <p class="muted">
+          Sin comercial que vende y desaparece. Sin account manager que traslada mensajes. Me escribes a mí, y yo
+          hablo con quien haga falta dentro de tu empresa.
+        </p>
+        <div class="direct__map" aria-hidden="true">
+          <span class="direct__me">Victor</span>
+          <ul role="list">
+            {team.map((t, i) => <li style={`--i:${i}`}>{t}</li>)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .partner h2 {
+    font-size: var(--step-4);
+    max-width: 18ch;
+  }
+
+  .partner__grid {
+    display: grid;
+    gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+
+  @media (min-width: 1000px) {
+    .partner__grid {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .versus__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line-inv);
+  }
+
+  .versus__row--head {
+    display: none;
+  }
+
+  .versus__topic {
+    grid-column: 1 / -1;
+    color: var(--graphite-inv);
+    font-size: 0.7rem;
+  }
+
+  .versus__vendor {
+    color: var(--graphite-inv);
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, var(--graphite-inv) 50%, transparent);
+    text-decoration-thickness: 1px;
+  }
+
+  .versus__partner {
+    font-weight: 500;
+  }
+
+  @media (min-width: 700px) {
+    .versus__row {
+      grid-template-columns: 0.8fr 1fr 1.2fr;
+      align-items: baseline;
+    }
+
+    .versus__row--head {
+      display: grid;
+      padding-top: 0;
+    }
+
+    .versus__row--head .mono {
+      font-size: 0.7rem;
+    }
+
+    .versus__topic {
+      grid-column: auto;
+    }
+  }
+
+  .direct {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+    border-radius: var(--radius);
+    background: var(--ink-2);
+    border: 1px solid var(--line-inv);
+  }
+
+  .direct h3 {
+    font-size: var(--step-2);
+  }
+
+  .direct__map {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .direct__me {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: var(--signal);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .direct__map ul {
+    display: grid;
+    gap: 0.35rem;
+    position: relative;
+  }
+
+  .direct__map li {
+    position: relative;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--line-inv);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--graphite-inv);
+  }
+
+  .direct__map li::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--signal);
+  }
+</style>

@@ -1,0 +1,260 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Portrait from '../components/Portrait.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../config/site';
+import { abs, breadcrumbNode, ids } from '../lib/schema';
+
+const crumbs = [{ name: 'Sobre mí', path: '/sobre-mi' }];
+
+const beliefs = [
+  { t: 'Negocio antes que canal', d: 'Primero entiendo cómo gana dinero una empresa. Las herramientas vienen después.' },
+  { t: 'Margen antes que volumen', d: 'Vender más no sirve si se vende lo que no deja dinero. Miro facturación, margen y coste de adquisición juntos.' },
+  { t: 'Construir sin parar el negocio', d: 'Mejoro sobre lo que existe, por capas. Un relanzamiento que obliga a parar casi nunca compensa.' },
+  { t: 'Honestidad sobre cifras', d: 'No prometo porcentajes. Hablo con datos cuando los hay y digo "no lo sé" cuando no.' },
+];
+
+// Trayectoria: datos del perfil público de LinkedIn pendientes de confirmar redacción y fechas.
+const path = [
+  { place: 'STIMULO Design Barcelona', what: 'Estrategia de marketing digital', pending: 'Rol exacto y periodo' },
+  { place: 'Tecnocampus', what: 'Formación', pending: 'Titulación y año' },
+];
+
+const profile = {
+  '@type': 'ProfilePage',
+  '@id': `${abs('/sobre-mi')}#perfil`,
+  url: abs('/sobre-mi'),
+  name: 'Sobre Victor Chifoni',
+  inLanguage: 'es-ES',
+  mainEntity: { '@id': ids.person },
+};
+---
+
+<Base
+  title="Sobre mí"
+  description="Victor Chifoni, Growth Partner con base en Barcelona. Trabajo donde se cruzan marketing, tecnología, datos e IA para ayudar a empresas a generar más negocio."
+  ogType="profile"
+  schema={[breadcrumbNode(crumbs), profile]}
+>
+  <PageHead eyebrow="Sobre mí" title="Soy Victor. <em>Growth Partner.</em>" crumbs={crumbs} />
+
+  <section class="section intro" style="padding-top:0" aria-label="Presentación">
+    <div class="wrap intro__grid">
+      <div class="intro__photo" data-reveal>
+        <Portrait variant="about" eager sizes="(min-width: 960px) 40vw, 92vw" />
+      </div>
+      <div class="intro__text prose" data-reveal style="--i:1">
+        <p class="lead">
+          Trabajo donde se cruzan marketing, tecnología y negocio. Me incorporo a empresas para entender cómo ganan
+          dinero, detectar dónde se pierde y construir lo necesario para que crezcan.
+        </p>
+        <p>
+          He llevado campañas en Google, Meta y TikTok, he reconstruido tiendas online, he trabajado SEO en sectores
+          regulados y he montado automatizaciones que eliminan trabajo manual. Ese recorrido transversal es lo que me
+          permite mirar una empresa entera y no solo un canal.
+        </p>
+        <p>
+          En los proyectos en los que he participado se repite lo mismo: la empresa no necesitaba más marketing. Necesitaba
+          que alguien conectara las piezas, eligiera la palanca correcta y se hiciera responsable de construirla.
+        </p>
+        <p>
+          Eso es lo que hago. Con base en Barcelona, para empresas de toda España que ya venden y quieren vender más.
+        </p>
+        <div class="intro__actions">
+          <a href={SITE.linkedin} class="btn" rel="me noopener" target="_blank">
+            <Icon name="linkedin" size={18} /> Conecta conmigo en LinkedIn
+          </a>
+          <a href="/casos" class="link">Ver casos <Icon name="arrow" size={16} /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark" aria-labelledby="beliefs-title">
+    <div class="wrap">
+      <div class="section-head__meta beliefs__meta">
+        <span class="eyebrow">Cómo pienso</span>
+        <span class="mono muted">Principios de trabajo</span>
+      </div>
+      <h2 id="beliefs-title" class="beliefs__title">
+        No vendo horas de marketing. Vendo capacidad para detectar, construir y escalar <em class="human">oportunidades.</em>
+      </h2>
+      <ol role="list" class="beliefs">
+        {
+          beliefs.map((b, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <span class="mono signal">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{b.t}</h3>
+              <p class="muted">{b.d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="path-title">
+    <div class="wrap path__grid">
+      <div>
+        <p class="eyebrow">Trayectoria</p>
+        <h2 id="path-title" class="path__title">De dónde vengo.</h2>
+      </div>
+      <div>
+        <ol role="list" class="path">
+          {
+            path.map((p) => (
+              <li data-reveal>
+                <h3>{p.place}</h3>
+                <p class="muted">{p.what}</p>
+                <span class="pending">{p.pending}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="linkedin" data-reveal>
+          <div>
+            <p class="label muted">LinkedIn</p>
+            <p>Mi trayectoria completa, recomendaciones y en qué estoy trabajando ahora.</p>
+            <p><span class="pending">2–3 publicaciones destacadas con enlace</span></p>
+          </div>
+          <a href={SITE.linkedin} class="btn btn--ghost" rel="me noopener" target="_blank">
+            <Icon name="linkedin" size={18} /> Ver perfil
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta />
+</Base>
+
+<style>
+  .intro__grid {
+    display: grid;
+    gap: clamp(2.5rem, 2rem + 3vw, 5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 960px) {
+    .intro__grid {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .intro__photo {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .intro__text .lead {
+    color: var(--ink);
+    max-width: none;
+  }
+
+  .intro__text p:not(.lead) {
+    color: var(--graphite);
+  }
+
+  .intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    padding-top: 1rem;
+  }
+
+  .beliefs__meta {
+    margin-bottom: 3rem;
+  }
+
+  .beliefs__title {
+    font-size: var(--step-4);
+    max-width: 22ch;
+    margin-bottom: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .beliefs {
+    display: grid;
+    gap: 1px;
+    background: var(--line-inv);
+    border: 1px solid var(--line-inv);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  @media (min-width: 800px) {
+    .beliefs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .beliefs {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .beliefs li {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    background: var(--ink);
+  }
+
+  .beliefs .mono {
+    font-size: 0.72rem;
+  }
+
+  .beliefs h3 {
+    font-size: var(--step-2);
+  }
+
+  .path__grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 1000px) {
+    .path__grid {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+
+  .path__title {
+    font-size: var(--step-4);
+    margin-top: 1.25rem;
+  }
+
+  .path li {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: start;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .path h3 {
+    font-size: var(--step-2);
+  }
+
+  .linkedin {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--paper-2);
+  }
+
+  .linkedin > div {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 46ch;
+  }
+</style>

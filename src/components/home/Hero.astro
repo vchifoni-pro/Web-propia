@@ -1,0 +1,345 @@
+---
+import { CTA } from '../../config/site';
+import Icon from '../Icon.astro';
+import Portrait from '../Portrait.astro';
+
+const sectors = [
+  'E-commerce de ticket medio-alto',
+  'Inmobiliarias',
+  'Concesionarios',
+  'Clínicas dentales',
+  'Audiología',
+  'Mobiliario',
+  'Salud y bienestar',
+  'B2B',
+  'Negocios basados en leads',
+];
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow" data-reveal="fade">Victor Chifoni · Growth Partner</p>
+
+      <h1 id="hero-title" class="hero__title" data-reveal-group>
+        <span class="line-mask" style="--i:0"><span>Me incorporo a tu empresa</span></span>
+        <span class="line-mask" style="--i:1"><span>para que genere</span></span>
+        <span class="line-mask" style="--i:2"><span>más <em class="human">negocio.</em></span></span>
+      </h1>
+
+      <p class="hero__lead lead" data-reveal style="--i:4">
+        Adquisición, conversión, automatización e IA trabajadas como un único sistema. Para e-commerce y empresas <span class="nowrap">high-ticket</span> que ya venden y quieren vender más, con alguien que piensa en su negocio desde dentro.
+      </p>
+
+      <div class="hero__actions" data-reveal style="--i:5">
+        <a href="/contacto" class="btn">
+          {CTA.primary}
+          <span class="btn__arrow"><Icon name="arrow" size={14} /></span>
+        </a>
+        <a href="#resultados" class="link">{CTA.secondary} <Icon name="arrow" size={16} /></a>
+      </div>
+    </div>
+
+    <div class="hero__visual" data-reveal style="--i:3">
+      <Portrait variant="hero" eager sizes="(min-width: 960px) 34vw, 92vw">
+        <div class="hero__card" aria-hidden="true">
+          <div class="hero__card-head">
+            <span class="mono">Tu negocio</span>
+            <span class="hero__live"><span></span>Trabajando</span>
+          </div>
+          <ol class="hero__flow" role="list">
+            <li>Adquisición</li>
+            <li>Conversión</li>
+            <li>Retención</li>
+            <li>Sistemas</li>
+          </ol>
+          <p class="hero__card-foot">Hablas conmigo. No con un account manager.</p>
+        </div>
+      </Portrait>
+    </div>
+  </div>
+
+  <div class="hero__sectors" aria-label="Tipos de empresa con las que trabajo">
+    <div class="marquee" data-marquee>
+      <ul role="list" class="marquee__track">
+        {sectors.map((s) => <li>{s}</li>)}
+      </ul>
+      <ul role="list" class="marquee__track" aria-hidden="true">
+        {sectors.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(2rem, 1rem + 4vw, 4.5rem);
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+    align-items: end;
+  }
+
+  @media (min-width: 960px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+      gap: clamp(2rem, 4vw, 5rem);
+    }
+  }
+
+  .hero__copy {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    padding-bottom: 0.5rem;
+  }
+
+  .hero__title {
+    font-size: clamp(2.6rem, 1.1rem + 6.2vw, 7rem);
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    font-weight: 520;
+  }
+
+  .hero__title .human {
+    letter-spacing: -0.03em;
+    color: var(--signal-ink);
+  }
+
+  .hero__lead {
+    max-width: 44ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+
+  .hero__visual {
+    position: relative;
+  }
+
+  .hero__visual :global(.portrait) {
+    aspect-ratio: 4 / 5;
+  }
+
+  @media (max-width: 959px) {
+    .hero__visual {
+      max-width: 520px;
+    }
+
+    .hero__visual :global(.portrait) {
+      aspect-ratio: 5 / 5.2;
+    }
+  }
+
+  /* La tarjeta nunca tapa la cara: abajo, sobresaliendo hacia el texto en desktop. */
+  .hero__card {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.85rem;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--ink) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--paper);
+    display: grid;
+    gap: 0.7rem;
+    box-shadow: 0 20px 40px -20px rgb(0 0 0 / 0.4);
+  }
+
+  @media (min-width: 960px) {
+    .hero__visual :global(.portrait) {
+      overflow: visible;
+    }
+
+    .hero__visual :global(.portrait__placeholder),
+    .hero__visual :global(.portrait__img) {
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero__card {
+      left: -2.5rem;
+      right: auto;
+      bottom: 1.5rem;
+      width: 250px;
+      padding: 1rem;
+    }
+  }
+
+  .hero__visual :global(.portrait__note) {
+    top: 1rem;
+    bottom: auto;
+  }
+
+  .hero__card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+  }
+
+  .hero__card-head .mono {
+    font-size: 0.68rem;
+    color: var(--graphite-inv);
+  }
+
+  .hero__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--signal);
+  }
+
+  .hero__live span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: pulse 1.8s var(--ease-in-out) infinite;
+  }
+
+  .hero__flow {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
+    counter-reset: flow;
+  }
+
+  @media (min-width: 960px) {
+    .hero__flow {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hero__flow li {
+    counter-increment: flow;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    background: var(--ink-3);
+    font-size: 0.8125rem;
+    font-weight: 480;
+    animation: flow-step 6s var(--ease-in-out) infinite;
+    animation-delay: calc(var(--n) * 1.5s);
+  }
+
+  .hero__flow li:nth-child(1) { --n: 0; }
+  .hero__flow li:nth-child(2) { --n: 1; }
+  .hero__flow li:nth-child(3) { --n: 2; }
+  .hero__flow li:nth-child(4) { --n: 3; }
+
+  .hero__flow li::before {
+    content: '0' counter(flow);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--graphite-inv);
+  }
+
+  .hero__card-foot {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--graphite-inv);
+  }
+
+  @keyframes flow-step {
+    0%, 30%, 100% {
+      background: var(--ink-3);
+      box-shadow: inset 2px 0 0 transparent;
+    }
+    8%, 22% {
+      background: #3a2a22;
+      box-shadow: inset 2px 0 0 var(--signal);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.8); }
+  }
+
+  /* Sectores */
+  .hero__sectors {
+    margin-top: clamp(3rem, 2rem + 4vw, 5.5rem);
+    border-block: 1px solid var(--line);
+    padding-block: 1.1rem;
+  }
+
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee__track {
+    display: flex;
+    flex: none;
+    gap: 3rem;
+    padding-right: 3rem;
+    animation: marquee 48s linear infinite;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  .marquee__track li {
+    display: inline-flex;
+    align-items: center;
+    gap: 3rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--graphite);
+    white-space: nowrap;
+  }
+
+  .marquee__track li::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: var(--signal);
+    border-radius: 50%;
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      mask-image: none;
+    }
+
+    .marquee__track {
+      flex: 1 1 auto;
+      flex-wrap: wrap;
+      gap: 0.75rem 2rem;
+      padding-inline: var(--gutter);
+      animation: none;
+    }
+
+    .marquee__track[aria-hidden='true'] {
+      display: none;
+    }
+
+    .marquee__track li {
+      gap: 2rem;
+    }
+  }
+</style>

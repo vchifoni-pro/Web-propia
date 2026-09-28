@@ -1,0 +1,135 @@
+---
+import { CTA, NAV, SITE } from '../config/site';
+import Icon from './Icon.astro';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer dark">
+  <div class="wrap">
+    <div class="site-footer__top">
+      <p class="site-footer__claim">
+        No vendo horas de marketing.<br />
+        <span class="muted">Ayudo a detectar, construir y escalar <em class="human">oportunidades</em> de crecimiento.</span>
+      </p>
+      <a href="/contacto" class="btn btn--signal">
+        {CTA.primary}
+        <span class="btn__arrow"><Icon name="arrow" size={14} /></span>
+      </a>
+    </div>
+
+    <div class="site-footer__grid">
+      <div>
+        <p class="label muted">Navegación</p>
+        <ul role="list">
+          <li><a href="/">Inicio</a></li>
+          {NAV.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+          <li><a href="/contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label muted">Contacto directo</p>
+        <ul role="list">
+          <li>
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </li>
+          <li>
+            <a href={SITE.linkedin} rel="me noopener" target="_blank">Conecta conmigo en LinkedIn</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p class="label muted">Trabajo con</p>
+        <p class="muted small">
+          E-commerce de ticket medio-alto, empresas high-ticket y negocios basados en leads. Con base en Barcelona,
+          para empresas de toda España.
+        </p>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom mono">
+      <span>© {year} {SITE.name}</span>
+      <a href="#contenido" class="to-top">Volver arriba ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-top: clamp(4rem, 3rem + 5vw, 7rem);
+    padding-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .site-footer__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    padding-bottom: clamp(3rem, 2rem + 4vw, 5rem);
+    border-bottom: 1px solid var(--line-inv);
+  }
+
+  .site-footer__claim {
+    font-size: var(--step-3);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    max-width: 22ch;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: 3rem;
+  }
+
+  @media (min-width: 760px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1fr 1.2fr;
+    }
+  }
+
+  .site-footer__grid .label {
+    margin-bottom: 1rem;
+  }
+
+  .site-footer__grid ul {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .site-footer__grid a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .site-footer__grid a:hover {
+    color: var(--signal);
+  }
+
+  .small {
+    font-size: 0.9375rem;
+    max-width: 36ch;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-inv);
+    font-size: 0.75rem;
+    color: var(--graphite-inv);
+  }
+
+  .to-top {
+    text-decoration: none;
+  }
+
+  .to-top:hover {
+    color: var(--signal);
+  }
+</style>

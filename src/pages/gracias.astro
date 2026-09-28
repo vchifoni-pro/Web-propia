@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../config/site';
+---
+
+<Base title="Mensaje recibido" noindex>
+  <section class="section state">
+    <div class="wrap state__inner">
+      <span class="state__icon"><Icon name="check" size={28} /></span>
+      <h1>Gracias. Lo he recibido.</h1>
+      <p class="lead">
+        Lo leo yo personalmente. Si veo que puedo aportar, te escribo para proponerte una llamada de 30 minutos. Si no,
+        también te lo diré.
+      </p>
+      <div class="state__actions">
+        <a href="/casos" class="btn">
+          Mientras tanto, mira los casos <span class="btn__arrow"><Icon name="arrow" size={14} /></span>
+        </a>
+        <a href={SITE.linkedin} class="link" rel="me noopener" target="_blank"><Icon name="linkedin" size={18} /> LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .state__inner {
+    display: grid;
+    gap: 1.75rem;
+    justify-items: start;
+    min-height: 60vh;
+    align-content: center;
+  }
+
+  .state h1 {
+    font-size: var(--step-5);
+    max-width: 14ch;
+  }
+
+  .state__icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+
+  .state__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+  }
+</style>

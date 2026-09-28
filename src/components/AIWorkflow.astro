@@ -1,0 +1,260 @@
+---
+/**
+ * Ejemplo ilustrativo de un flujo de IA dentro de una empresa.
+ * Los pasos se activan en secuencia al entrar en pantalla (comunica: esto ocurre solo).
+ * Se identifica claramente como ejemplo, no como resultado de un cliente.
+ */
+const steps = [
+  { t: 'Sáb 23:40', who: 'Meta Ads', what: 'Entra un lead desde un formulario de campaña.', out: 'Nuevo lead' },
+  {
+    t: 'Sáb 23:40',
+    who: 'Agente IA',
+    what: 'Lee sus respuestas y lo clasifica por presupuesto, urgencia y encaje con tu oferta.',
+    out: 'Prioridad A · alta intención',
+  },
+  {
+    t: 'Sáb 23:41',
+    who: 'CRM',
+    what: 'Se crea la ficha con un resumen y el siguiente paso recomendado.',
+    out: 'Ficha + resumen',
+  },
+  {
+    t: 'Sáb 23:41',
+    who: 'Email / WhatsApp',
+    what: 'El cliente recibe una respuesta inmediata y personalizada. No espera al lunes.',
+    out: 'Respuesta enviada',
+  },
+  {
+    t: 'Lun 09:00',
+    who: 'Equipo comercial',
+    what: 'Empieza el día con los leads ordenados por prioridad y contexto de cada uno.',
+    out: 'Llamada con contexto',
+  },
+  {
+    t: 'Vie 18:00',
+    who: 'Informe',
+    what: 'Dirección recibe leads, coste por lead y conversión por canal. Sin montar un Excel.',
+    out: 'Informe semanal',
+  },
+];
+---
+
+<figure class="wf" data-workflow>
+  <div class="wf__bar">
+    <span class="wf__dots" aria-hidden="true"><span></span><span></span><span></span></span>
+    <span class="mono">workflow · lead-entrante</span>
+    <span class="wf__status mono"><span aria-hidden="true"></span>activo</span>
+  </div>
+  <ol role="list" class="wf__steps">
+    {
+      steps.map((s, i) => (
+        <li class="wf__step" style={`--i:${i}`}>
+          <span class="wf__time mono">{s.t}</span>
+          <span class="wf__line" aria-hidden="true">
+            <span class="wf__dot" />
+          </span>
+          <span class="wf__content">
+            <span class="wf__who mono">{s.who}</span>
+            <span class="wf__what">{s.what}</span>
+          </span>
+          <span class="wf__out mono">{s.out}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <figcaption class="wf__caption mono">
+    Ejemplo ilustrativo de un flujo que puede construirse con IA, un CRM y herramientas como n8n.
+  </figcaption>
+</figure>
+
+<style>
+  .wf {
+    border: 1px solid var(--line-inv);
+    border-radius: var(--radius);
+    background: var(--ink-2);
+    overflow: hidden;
+  }
+
+  .wf__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--line-inv);
+    font-size: 0.7rem;
+    color: var(--graphite-inv);
+  }
+
+  .wf__bar .mono {
+    font-size: 0.7rem;
+    text-transform: none;
+  }
+
+  .wf__dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .wf__dots span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line-inv);
+  }
+
+  .wf__status {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--signal);
+  }
+
+  .wf__status span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+
+  .wf__steps {
+    padding: 0.5rem clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
+  }
+
+  .wf__step {
+    display: grid;
+    grid-template-columns: 4.5rem 1.25rem 1fr;
+    gap: 0 0.75rem;
+    padding: 0.9rem 0;
+  }
+
+  @media (min-width: 700px) {
+    .wf__step {
+      grid-template-columns: 5.5rem 1.5rem 1fr auto;
+      align-items: start;
+    }
+  }
+
+  .wf__time {
+    font-size: 0.7rem;
+    color: var(--graphite-inv);
+    text-transform: none;
+    padding-top: 0.2rem;
+  }
+
+  .wf__line {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    grid-row: span 2;
+  }
+
+  @media (min-width: 700px) {
+    .wf__line {
+      grid-row: auto;
+    }
+  }
+
+  .wf__line::after {
+    content: '';
+    position: absolute;
+    top: 1.1rem;
+    bottom: -1.7rem;
+    width: 1px;
+    background: var(--line-inv);
+  }
+
+  .wf__step:last-child .wf__line::after {
+    display: none;
+  }
+
+  .wf__dot {
+    position: relative;
+    z-index: 1;
+    width: 11px;
+    height: 11px;
+    margin-top: 0.3rem;
+    border-radius: 50%;
+    border: 1px solid var(--graphite-inv);
+    background: var(--ink-2);
+    transition:
+      background-color 0.3s,
+      border-color 0.3s,
+      box-shadow 0.4s;
+  }
+
+  .wf__content {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .wf__who {
+    font-size: 0.7rem;
+    color: var(--graphite-inv);
+  }
+
+  .wf__what {
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    max-width: 46ch;
+  }
+
+  .wf__out {
+    grid-column: 3;
+    justify-self: start;
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 6px;
+    border: 1px solid var(--line-inv);
+    font-size: 0.66rem;
+    color: var(--graphite-inv);
+    transition:
+      color 0.3s,
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+
+  @media (min-width: 700px) {
+    .wf__out {
+      grid-column: auto;
+      margin-top: 0;
+    }
+  }
+
+  /* Estados de la secuencia */
+  :global(.js) .wf__step {
+    opacity: 0.35;
+    transition: opacity 0.5s var(--ease-out);
+  }
+
+  :global(.js) .wf__step.is-done,
+  :global(.js) .wf__step.is-active {
+    opacity: 1;
+  }
+
+  .wf__step.is-done .wf__dot {
+    background: var(--graphite-inv);
+    border-color: var(--graphite-inv);
+  }
+
+  .wf__step.is-active .wf__dot {
+    background: var(--signal);
+    border-color: var(--signal);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--signal) 25%, transparent);
+  }
+
+  .wf__step.is-active .wf__out {
+    color: var(--ink);
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .wf__caption {
+    padding: 0.9rem 1rem;
+    border-top: 1px solid var(--line-inv);
+    font-size: 0.68rem;
+    color: var(--graphite-inv);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+</style>

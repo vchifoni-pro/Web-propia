@@ -1,0 +1,485 @@
+---
+import { CTA, SITE } from '../config/site';
+import Icon from './Icon.astro';
+
+const goals = ['Adquisición', 'Ventas', 'E-commerce', 'Conversión', 'SEO', 'Automatización', 'IA', 'No lo tengo claro'];
+
+const revenue = [
+  'Menos de 250.000 €/año',
+  '250.000 € – 1 M€/año',
+  '1 – 5 M€/año',
+  '5 – 20 M€/año',
+  'Más de 20 M€/año',
+  'Prefiero no decirlo',
+];
+
+const budget = [
+  'Menos de 2.000 €/mes',
+  '2.000 – 5.000 €/mes',
+  '5.000 – 15.000 €/mes',
+  '15.000 – 50.000 €/mes',
+  'Más de 50.000 €/mes',
+  'Aún no invertimos / no lo sé',
+];
+
+const endpoint = SITE.formEndpoint;
+const action = endpoint || `mailto:${SITE.email}`;
+---
+
+<div class="cf">
+  <form
+    class="cf__form"
+    action={action}
+    method="post"
+    enctype={endpoint ? undefined : 'text/plain'}
+    data-contact-form
+    data-endpoint={endpoint}
+    data-email={SITE.email}
+    aria-describedby="cf-intro"
+  >
+    <p id="cf-intro" class="cf__intro muted">
+      Cuanto mejor entienda tu negocio antes de hablar, más útil será la conversación. Te llevará unos 3 minutos.
+    </p>
+
+    <fieldset class="cf__block">
+      <legend class="cf__legend"><span class="mono">01</span> Sobre ti</legend>
+      <div class="cf__row">
+        <div class="field">
+          <label for="f-nombre">Nombre</label>
+          <input id="f-nombre" name="nombre" autocomplete="name" required data-required="¿Cómo te llamas?" />
+          <p class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input
+            id="f-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            required
+            data-required="Necesito un email para responderte."
+          />
+          <p class="field__error" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="cf__row">
+        <div class="field">
+          <label for="f-empresa">Empresa</label>
+          <input id="f-empresa" name="empresa" autocomplete="organization" required data-required="¿Cómo se llama tu empresa?" />
+          <p class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-web">Web <span class="field__opt">opcional</span></label>
+          <input id="f-web" name="web" type="text" inputmode="url" autocomplete="url" placeholder="tuempresa.com" />
+          <p class="field__error" aria-live="polite"></p>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="cf__block">
+      <legend class="cf__legend"><span class="mono">02</span> Tu negocio</legend>
+      <div class="field">
+        <label for="f-negocio">¿A qué se dedica tu negocio?</label>
+        <input
+          id="f-negocio"
+          name="negocio"
+          required
+          placeholder="Ej.: tienda online de mobiliario, clínica dental con 3 centros…"
+          data-required="Cuéntame en una línea a qué os dedicáis."
+        />
+        <p class="field__error" aria-live="polite"></p>
+      </div>
+      <div class="cf__row">
+        <div class="field">
+          <label for="f-facturacion">Facturación aproximada</label>
+          <select id="f-facturacion" name="facturacion" required data-required="Elige un rango aproximado.">
+            <option value="" disabled selected>Elige un rango</option>
+            {revenue.map((r) => <option>{r}</option>)}
+          </select>
+          <p class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="f-inversion">Inversión actual en crecimiento/marketing</label>
+          <select id="f-inversion" name="inversion" required data-required="Elige un rango aproximado.">
+            <option value="" disabled selected>Elige un rango</option>
+            {budget.map((b) => <option>{b}</option>)}
+          </select>
+          <p class="field__error" aria-live="polite"></p>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="cf__block cf__goals" data-min-checked="1">
+      <legend class="cf__legend"><span class="mono">03</span> ¿Qué quieres mejorar?</legend>
+      <p class="cf__hint muted">Puedes elegir varias.</p>
+      <div class="chips">
+        {
+          goals.map((g) => (
+            <label class="chip">
+              <input type="checkbox" name="mejorar" value={g} />
+              <span>
+                <Icon name="check" size={14} class="chip__check" />
+                {g}
+              </span>
+            </label>
+          ))
+        }
+      </div>
+      <p class="field__error" aria-live="polite"></p>
+    </fieldset>
+
+    <fieldset class="cf__block">
+      <legend class="cf__legend"><span class="mono">04</span> El problema</legend>
+      <div class="field">
+        <label for="f-problema">¿Qué problema quieres solucionar?</label>
+        <textarea
+          id="f-problema"
+          name="problema"
+          rows="5"
+          minlength="20"
+          required
+          placeholder="Ej.: invertimos en Ads pero los leads no se convierten en ventas; o la tienda tiene tráfico y no vende."
+          data-required="Cuéntame qué te gustaría resolver."></textarea>
+        <p class="field__meta mono"><span data-count>0</span> caracteres · cuanto más concreto, mejor</p>
+        <p class="field__error" aria-live="polite"></p>
+      </div>
+    </fieldset>
+
+    {endpoint && <input type="hidden" name="_next" value={new URL('/gracias', SITE.url).toString()} />}
+
+    <div class="hp" aria-hidden="true">
+      <label>No rellenar <input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <div class="cf__submit">
+      <button type="submit" class="btn btn--signal">
+        <span class="cf__submit-label">{CTA.submit}</span>
+        <span class="btn__arrow"><Icon name="arrow" size={14} /></span>
+      </button>
+      <p class="cf__status" data-form-status role="status" aria-live="polite"></p>
+      <p class="cf__privacy muted">
+        Uso tus datos solo para responderte. Sin newsletters ni cesión a terceros.
+      </p>
+    </div>
+  </form>
+
+  <div class="cf__success" data-form-success hidden tabindex="-1">
+    <span class="cf__success-icon"><Icon name="check" size={28} /></span>
+    <h2>Gracias<span data-success-name></span>. Lo he recibido.</h2>
+    <p class="lead">
+      Lo leo yo personalmente. Si veo que puedo aportar, te escribo para proponerte una llamada de 30 minutos. Si no,
+      también te lo diré.
+    </p>
+    <a href={SITE.linkedin} class="btn btn--ghost" rel="me noopener" target="_blank">
+      <Icon name="linkedin" size={18} /> Mientras tanto, conecta en LinkedIn
+    </a>
+  </div>
+</div>
+
+<style>
+  .cf__form {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .cf__intro {
+    max-width: 52ch;
+  }
+
+  .cf__block {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    min-width: 0;
+  }
+
+  .cf__legend {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0 0 1rem;
+    margin-bottom: 0.25rem;
+    width: 100%;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--step-1);
+    font-weight: 540;
+    letter-spacing: -0.02em;
+  }
+
+  .cf__legend .mono {
+    font-size: 0.72rem;
+    color: var(--signal-ink);
+  }
+
+  .cf__row {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .cf__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .field {
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
+  }
+
+  .field label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .field__opt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--graphite);
+    margin-left: 0.35rem;
+    font-weight: 400;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    font-size: 1rem; /* evita zoom en iOS */
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      background-color 0.2s;
+    appearance: none;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23111110' stroke-width='1.6'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .field select:invalid {
+    color: var(--graphite);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 8rem;
+    line-height: 1.5;
+  }
+
+  .field ::placeholder {
+    color: color-mix(in srgb, var(--graphite) 70%, transparent);
+  }
+
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover {
+    border-color: color-mix(in srgb, var(--ink) 40%, var(--line));
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--signal) 30%, transparent);
+    background: #fff;
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: var(--error);
+  }
+
+  .field__error {
+    min-height: 0;
+    font-size: 0.8125rem;
+    color: var(--error);
+  }
+
+  .field__error:empty {
+    display: none;
+  }
+
+  .field__meta {
+    font-size: 0.68rem;
+    color: var(--graphite);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .cf__hint {
+    font-size: 0.875rem;
+    margin-top: -0.5rem;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .chip {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 480;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .chip :global(.chip__check) {
+    width: 0;
+    opacity: 0;
+    transition:
+      width 0.3s var(--ease-out),
+      margin 0.3s var(--ease-out),
+      opacity 0.2s;
+  }
+
+  .chip:hover span {
+    border-color: var(--ink);
+  }
+
+  .chip input:checked + span {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .chip input:checked + span :global(.chip__check) {
+    width: 14px;
+    margin-right: 0.4rem;
+    opacity: 1;
+    color: var(--signal);
+  }
+
+  .chip input:focus-visible + span {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .cf__goals.has-error .chip span {
+    border-color: var(--error);
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .cf__submit {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 639px) {
+    .cf__submit .btn {
+      width: 100%;
+    }
+  }
+
+  .cf__submit .btn[aria-busy='true'] .cf__submit-label::after {
+    content: '…';
+  }
+
+  .cf__submit .btn[aria-busy='true'] .btn__arrow {
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .cf__status:empty {
+    display: none;
+  }
+
+  .cf__status {
+    font-size: 0.9375rem;
+  }
+
+  .cf__status[data-tone='error'] {
+    color: var(--error);
+  }
+
+  .cf__status :global(a) {
+    color: inherit;
+    font-weight: 540;
+  }
+
+  .cf__privacy {
+    font-size: 0.8125rem;
+  }
+
+  .cf__success {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+    padding: clamp(1.5rem, 1rem + 3vw, 3rem);
+    border-radius: var(--radius);
+    background: var(--paper-2);
+  }
+
+  .cf__success:focus {
+    outline: none;
+  }
+
+  .cf__success h2 {
+    font-size: var(--step-4);
+  }
+
+  .cf__success-icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--signal);
+    color: var(--ink);
+    animation: pop 0.6s var(--ease-out);
+  }
+
+  @keyframes pop {
+    from {
+      scale: 0.4;
+      opacity: 0;
+    }
+  }
+</style>

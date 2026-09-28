@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import GrowthSystem from '../components/GrowthSystem.astro';
+import Method from '../components/Method.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Icon from '../components/Icon.astro';
+import { STAGES } from '../data/system';
+import { abs, breadcrumbNode, ids } from '../lib/schema';
+
+const crumbs = [{ name: 'Capacidades', path: '/capacidades' }];
+
+const services = STAGES.map((s) => ({
+  '@type': 'Service',
+  '@id': `${abs('/capacidades')}#${s.id}`,
+  name: s.name,
+  description: s.outcome,
+  provider: { '@id': ids.person },
+  areaServed: { '@type': 'Country', name: 'España' },
+  serviceType: s.capabilities.join(', '),
+}));
+---
+
+<Base
+  title="Capacidades: el sistema de crecimiento"
+  description="Adquisición, visibilidad orgánica, conversión, retención, IA y automatización y datos. Las capacidades de Victor Chifoni organizadas como un único sistema de crecimiento."
+  schema={[breadcrumbNode(crumbs), ...services]}
+>
+  <PageHead
+    eyebrow="Capacidades"
+    title="Un perfil transversal. <em>Un</em> objetivo."
+    lead="Trabajo marketing, tecnología, datos, automatización e IA. No para venderte todo, sino para poder elegir la pieza que de verdad mueve tu negocio y conectarla con el resto."
+    crumbs={crumbs}
+  />
+
+  <section class="section" style="padding-top:0" aria-label="Sistema de crecimiento interactivo">
+    <div class="wrap">
+      <GrowthSystem />
+    </div>
+  </section>
+
+  <section class="section dark" aria-labelledby="detail-title">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div class="section-head__meta">
+          <span class="eyebrow">En detalle</span>
+          <span class="mono muted">{STAGES.length} áreas · 1 sistema</span>
+        </div>
+        <h2 id="detail-title">Qué hago en cada parte del sistema.</h2>
+        <p class="lead">
+          La lista es larga a propósito: me permite ver el negocio completo. En cada proyecto usamos solo lo que hace falta.
+        </p>
+      </div>
+
+      <div class="stages">
+        {
+          STAGES.map((s) => (
+            <section class="stage" id={s.id} aria-labelledby={`st-${s.id}`} data-reveal>
+              <div class="stage__head">
+                <span class="mono signal">{s.index}</span>
+                <h3 id={`st-${s.id}`}>{s.name}</h3>
+              </div>
+              <div class="stage__body">
+                <p class="stage__q">{s.question}</p>
+                <p class="muted">{s.outcome}</p>
+                <ul role="list" class="tags">
+                  {s.capabilities.map((c) => (
+                    <li class="tag">{c}</li>
+                  ))}
+                </ul>
+                {s.id === 'automatizacion' && (
+                  <a href="/ia-automatizacion" class="link">
+                    Ver cómo aplico IA y automatización <Icon name="arrow" size={16} />
+                  </a>
+                )}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Method title="Las herramientas se eligen después de entender el negocio." />
+  <FinalCta />
+</Base>
+
+<style>
+  .section-head h2 {
+    font-size: var(--step-4);
+    max-width: 16ch;
+  }
+
+  .stage {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3rem);
+    border-top: 1px solid var(--line-inv);
+  }
+
+  @media (min-width: 900px) {
+    .stage {
+      grid-template-columns: 1fr 1.4fr;
+      gap: 3rem;
+    }
+  }
+
+  .stage__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .stage__head .mono {
+    font-size: 0.75rem;
+  }
+
+  .stage__head h3 {
+    font-size: var(--step-3);
+  }
+
+  .stage__body {
+    min-width: 0;
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .stage__q {
+    font-size: var(--step-1);
+    line-height: 1.4;
+  }
+</style>

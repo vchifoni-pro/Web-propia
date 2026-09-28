@@ -1,0 +1,370 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Counter from '../../components/Counter.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import Icon from '../../components/Icon.astro';
+import { publishedCases, type Case } from '../../data/cases';
+import { abs, breadcrumbNode, ids } from '../../lib/schema';
+
+export function getStaticPaths() {
+  const cases = publishedCases();
+  return cases.map((c, i) => ({
+    params: { slug: c.slug },
+    props: { c, next: cases[(i + 1) % cases.length] },
+  }));
+}
+
+interface Props {
+  c: Case;
+  next: Case;
+}
+const { c, next } = Astro.props;
+const path = `/casos/${c.slug}`;
+const crumbs = [
+  { name: 'Casos', path: '/casos' },
+  { name: c.client, path },
+];
+
+const article = {
+  '@type': 'Article',
+  '@id': `${abs(path)}#caso`,
+  headline: `${c.client}: ${c.title}`,
+  description: c.summary,
+  inLanguage: 'es-ES',
+  author: { '@id': ids.person },
+  publisher: { '@id': ids.person },
+  mainEntityOfPage: abs(path),
+  about: [{ '@type': 'Organization', name: c.client }, ...c.areas.map((a) => ({ '@type': 'Thing', name: a }))],
+  genre: 'Caso de estudio',
+};
+---
+
+<Base title={`${c.client}: caso de crecimiento`} description={`${c.title} ${c.summary}`} ogType="article" schema={[breadcrumbNode(crumbs), article]}>
+  <article>
+    <PageHead eyebrow={`${c.client} · ${c.sector}`} title={c.title} crumbs={crumbs}>
+      <p class="lead summary" data-reveal style="--i:2">{c.summary}</p>
+    </PageHead>
+
+    <section class="facts-wrap" aria-label="Datos del caso">
+      <div class="wrap">
+        <dl class="facts" data-reveal>
+          <div class="facts__metric">
+            <dt class="mono">Resultado</dt>
+            <dd>
+              <span class="facts__value">
+                {
+                  c.metric.value !== undefined ? (
+                    <Counter value={c.metric.value} prefix={c.metric.prefix} suffix={c.metric.suffix} />
+                  ) : (
+                    c.metric.display
+                  )
+                }
+              </span>
+              <span class="muted">{c.metric.label}</span>
+            </dd>
+          </div>
+          <div>
+            <dt class="mono">Cliente</dt>
+            <dd>{c.client}</dd>
+          </div>
+          <div>
+            <dt class="mono">Periodo</dt>
+            <dd>{c.period ?? <span class="pending">Periodo</span>}</dd>
+          </div>
+          <div>
+            <dt class="mono">Mi papel</dt>
+            <dd>{c.role ?? <span class="pending">Papel exacto</span>}</dd>
+          </div>
+          <div>
+            <dt class="mono">Áreas</dt>
+            <dd class="tags">{c.areas.map((a) => <span class="tag">{a}</span>)}</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="wrap body">
+      <div class="body__main">
+        <section aria-labelledby="h-contexto" data-reveal>
+          <h2 id="h-contexto"><span class="mono">01</span> Contexto</h2>
+          {c.context.map((p) => <p>{p}</p>)}
+        </section>
+
+        <section aria-labelledby="h-reto" data-reveal>
+          <h2 id="h-reto"><span class="mono">02</span> El reto</h2>
+          {c.challenge.map((p) => <p>{p}</p>)}
+        </section>
+
+        <section aria-labelledby="h-hecho" data-reveal>
+          <h2 id="h-hecho"><span class="mono">03</span> Qué se hizo</h2>
+          {
+            c.approach.length > 0 ? (
+              <ol role="list" class="approach">
+                {c.approach.map((a) => (
+                  <li>
+                    <h3>{a.title}</h3>
+                    <p>{a.body}</p>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p>
+                <span class="pending">Acciones y decisiones clave del proyecto</span>
+              </p>
+            )
+          }
+        </section>
+
+        <section aria-labelledby="h-resultado" data-reveal>
+          <h2 id="h-resultado"><span class="mono">04</span> Resultado</h2>
+          {c.result.map((p) => <p class="result">{p}</p>)}
+        </section>
+
+        {
+          c.lesson && (
+            <blockquote class="lesson" data-reveal>
+              <p>{c.lesson}</p>
+            </blockquote>
+          )
+        }
+      </div>
+
+      {
+        c.pending.length > 0 && (
+          <aside class="todo" aria-labelledby="todo-title">
+            <p id="todo-title" class="pending">Para completar este caso</p>
+            <ul>
+              {c.pending.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+    </div>
+  </article>
+
+  <nav class="wrap next" aria-label="Siguiente caso">
+    <a href={`/casos/${next.slug}`} class="next__link">
+      <span class="mono muted">Siguiente caso</span>
+      <span class="next__name">{next.client}</span>
+      <span class="next__go" aria-hidden="true"><Icon name="arrow" size={22} /></span>
+    </a>
+  </nav>
+
+  <FinalCta />
+</Base>
+
+<style>
+  .summary {
+    max-width: 52ch;
+  }
+
+  .facts {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  @media (min-width: 900px) {
+    .facts {
+      grid-template-columns: 1.6fr repeat(4, 1fr);
+    }
+  }
+
+  .facts > div {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.4rem;
+    background: var(--paper);
+  }
+
+  .facts dt {
+    font-size: 0.68rem;
+    color: var(--graphite);
+  }
+
+  .facts dd {
+    font-weight: 500;
+  }
+
+  .facts__metric dd {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .facts__metric .muted {
+    font-weight: 400;
+    font-size: 0.9375rem;
+  }
+
+  .facts__value {
+    font-size: var(--step-4);
+    font-weight: 520;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--signal-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .body {
+    display: grid;
+    gap: 3rem;
+    padding-block: var(--section);
+  }
+
+  @media (min-width: 1000px) {
+    .body {
+      grid-template-columns: 1fr 320px;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .todo {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .body__main {
+    display: grid;
+    gap: clamp(3rem, 2rem + 3vw, 4.5rem);
+    max-width: 68ch;
+  }
+
+  .body__main section {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .body__main h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: var(--step-3);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .body__main h2 .mono {
+    font-size: 0.75rem;
+    color: var(--signal-ink);
+    letter-spacing: 0;
+  }
+
+  .body__main p {
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  .approach {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .approach li {
+    display: grid;
+    gap: 0.4rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--signal);
+  }
+
+  .approach h3 {
+    font-size: var(--step-1);
+  }
+
+  .approach p {
+    font-size: var(--step-0) !important;
+    color: var(--graphite);
+  }
+
+  .result {
+    font-weight: 500;
+  }
+
+  .lesson {
+    margin: 0;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .lesson p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--step-3) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.02em;
+  }
+
+  .todo {
+    display: grid;
+    gap: 1rem;
+    padding: 1.4rem;
+    border: 1px dashed var(--signal-ink);
+    border-radius: var(--radius);
+  }
+
+  .todo ul {
+    display: grid;
+    gap: 0.6rem;
+    padding-left: 1.1rem;
+    font-size: 0.875rem;
+    color: var(--graphite);
+  }
+
+  .next {
+    padding-bottom: var(--section);
+  }
+
+  .next__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    padding-block: 2rem;
+    border-block: 1px solid var(--line);
+    text-decoration: none;
+  }
+
+  .next__link .mono {
+    grid-column: 1 / -1;
+    font-size: 0.72rem;
+  }
+
+  .next__name {
+    font-size: var(--step-5);
+    font-weight: 520;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .next__go {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.3s,
+      transform 0.5s var(--ease-out);
+  }
+
+  .next__link:hover .next__name {
+    color: var(--signal-ink);
+  }
+
+  .next__link:hover .next__go {
+    background: var(--signal);
+    border-color: var(--signal);
+    transform: translateX(6px);
+  }
+</style>

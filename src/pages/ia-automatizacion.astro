@@ -1,0 +1,287 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import AIWorkflow from '../components/AIWorkflow.astro';
+import FinalCta from '../components/FinalCta.astro';
+import { abs, breadcrumbNode, ids } from '../lib/schema';
+
+const crumbs = [{ name: 'IA y automatización', path: '/ia-automatizacion' }];
+
+const areas = [
+  {
+    t: 'Ventas y leads',
+    items: [
+      'Clasificación y priorización automática de leads',
+      'Respuesta inmediata y personalizada fuera de horario',
+      'Resúmenes para el comercial antes de cada llamada',
+      'Seguimientos que no dependen de la memoria de nadie',
+    ],
+  },
+  {
+    t: 'Atención al cliente',
+    items: [
+      'Agentes que responden las preguntas repetidas con tu información real',
+      'Traspaso a una persona cuando la conversación lo necesita',
+      'Estado de pedidos, citas o disponibilidad sin intervención manual',
+    ],
+  },
+  {
+    t: 'Operación interna',
+    items: [
+      'Procesamiento de catálogos, documentos y fichas',
+      'Conexión entre web, CRM, ERP, email y hojas de cálculo',
+      'Workflows con n8n y APIs',
+      'Pequeñas herramientas internas a medida',
+    ],
+  },
+  {
+    t: 'Dirección y datos',
+    items: [
+      'Informes automáticos con las métricas que importan',
+      'Alertas cuando algo se desvía (coste por lead, stock, conversión)',
+      'Datos de marketing y ventas en un mismo sitio',
+    ],
+  },
+];
+
+const principles = [
+  { t: 'Primero el proceso, luego la IA', d: 'Si un proceso está mal diseñado, automatizarlo solo hace que falle más rápido. Empezamos por entenderlo.' },
+  { t: 'Personas donde importan', d: 'La IA se encarga de lo repetitivo. Las conversaciones que cierran ventas siguen siendo de tu equipo.' },
+  { t: 'Medible desde el primer día', d: 'Cada automatización tiene un objetivo: horas ahorradas, tiempo de respuesta, leads atendidos, errores evitados.' },
+  { t: 'Sobre tus herramientas', d: 'Conecto lo que ya usas antes de proponer software nuevo. Menos cambios, adopción más rápida.' },
+];
+
+const service = {
+  '@type': 'Service',
+  '@id': `${abs('/ia-automatizacion')}#servicio`,
+  name: 'IA y automatización para empresas',
+  description:
+    'Automatización de procesos, agentes de IA, clasificación de leads, automatización comercial y de atención, workflows con n8n y APIs, informes automáticos y sistemas internos a medida.',
+  provider: { '@id': ids.person },
+  areaServed: { '@type': 'Country', name: 'España' },
+};
+---
+
+<Base
+  title="IA y automatización para empresas"
+  description="IA aplicada a la operación de la empresa: agentes, clasificación de leads, automatización comercial y de atención, workflows con n8n y APIs e informes automáticos."
+  schema={[breadcrumbNode(crumbs), service]}
+  headerTone="dark"
+>
+  <div class="dark ai-page">
+    <PageHead
+      eyebrow="IA y automatización"
+      title="El marketing trae oportunidades. Los sistemas hacen que puedas <em>aprovecharlas</em>."
+      lead="No uso la IA solo para generar textos. La uso para que tu empresa opere mejor: menos tareas manuales, respuestas más rápidas y datos donde se toman las decisiones."
+      crumbs={crumbs}
+    />
+
+    <section class="section" style="padding-top:0" aria-labelledby="wf-title">
+      <div class="wrap wf-grid">
+        <div class="wf-copy">
+          <h2 id="wf-title">Qué pasa cuando entra un lead un sábado por la noche.</h2>
+          <p class="lead">
+            En muchas empresas, nada hasta el lunes. Y el lunes ese lead ya ha hablado con otras dos empresas. Así puede
+            funcionar con un sistema detrás.
+          </p>
+        </div>
+        <AIWorkflow />
+      </div>
+    </section>
+  </div>
+
+  <section class="section" aria-labelledby="areas-title">
+    <div class="wrap">
+      <div class="section-head section-head--split">
+        <div class="section-head__meta">
+          <span class="eyebrow">Dónde se aplica</span>
+          <span class="mono muted">Ejemplos habituales</span>
+        </div>
+        <h2 id="areas-title">IA dentro de la empresa, no en una demo.</h2>
+        <p class="lead">Estos son los lugares donde normalmente hay más horas perdidas y más oportunidades sin atender.</p>
+      </div>
+      <div class="areas">
+        {
+          areas.map((a, i) => (
+            <section class="area" data-reveal style={`--i:${i % 2}`} aria-labelledby={`area-${i}`}>
+              <p class="mono signal">{String(i + 1).padStart(2, '0')}</p>
+              <h3 id={`area-${i}`}>{a.t}</h3>
+              <ul>
+                {a.items.map((it) => (
+                  <li>{it}</li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section principles-wrap" aria-labelledby="pr-title">
+    <div class="wrap principles-grid">
+      <h2 id="pr-title">Cómo lo hago.</h2>
+      <ol role="list" class="principles">
+        {
+          principles.map((p, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{p.t}</h3>
+                <p class="muted">{p.d}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <FinalCta
+    title="¿Cuántas horas pierde tu equipo en tareas que podría hacer un sistema?"
+    text="Cuéntame cómo funciona tu operación. En 30 minutos podemos identificar qué procesos tiene sentido automatizar primero."
+  />
+</Base>
+
+<style>
+  .ai-page {
+    margin-top: calc(var(--header-h) * -1);
+    padding-top: var(--header-h);
+  }
+
+  .ai-page :global(.page-head__title) {
+    max-width: 20ch;
+    font-size: clamp(2.4rem, 1.2rem + 4.8vw, 5.75rem);
+  }
+
+  .ai-page :global(.page-head__title em) {
+    color: var(--signal);
+  }
+
+  .ai-page :global(.crumbs ol),
+  .ai-page :global(.crumbs [aria-current]) {
+    color: var(--graphite-inv);
+  }
+
+  .ai-page :global(.crumbs a:hover) {
+    color: var(--paper);
+  }
+
+  .wf-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 1000px) {
+    .wf-grid {
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+    }
+
+    .wf-copy {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+
+  .wf-copy {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .wf-copy h2 {
+    font-size: var(--step-3);
+    max-width: 18ch;
+  }
+
+  .section-head h2 {
+    font-size: var(--step-4);
+    max-width: 16ch;
+  }
+
+  .areas {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 800px) {
+    .areas {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .area {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition:
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+
+  .area:hover {
+    border-color: var(--ink);
+    background: var(--paper-2);
+  }
+
+  .area .mono {
+    font-size: 0.72rem;
+  }
+
+  .area h3 {
+    font-size: var(--step-2);
+  }
+
+  .area ul {
+    display: grid;
+    gap: 0.6rem;
+    padding-left: 1.1rem;
+    color: var(--graphite);
+  }
+
+  .area li::marker {
+    color: var(--signal);
+  }
+
+  .principles-wrap {
+    padding-top: 0;
+  }
+
+  .principles-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1000px) {
+    .principles-grid {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+
+  .principles-grid h2 {
+    font-size: var(--step-4);
+  }
+
+  .principles li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .principles .mono {
+    font-size: 0.75rem;
+    color: var(--signal-ink);
+    padding-top: 0.4rem;
+  }
+
+  .principles h3 {
+    font-size: var(--step-2);
+    margin-bottom: 0.5rem;
+  }
+</style>

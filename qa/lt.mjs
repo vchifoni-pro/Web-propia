@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+const p = await ctx.newPage();
+const cdp = await ctx.newCDPSession(p);
+await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+await p.addInitScript(() => { window.__lt = []; new PerformanceObserver((l) => l.getEntries().forEach((e) => window.__lt.push([Math.round(e.startTime), Math.round(e.duration)]))).observe({ type: 'longtask', buffered: true }); });
+await cdp.send('Tracing.start', { categories: 'devtools.timeline', transferMode: 'ReturnAsStream' });
+await p.goto('http://localhost:4321' + (process.argv[2] ?? '/'), { waitUntil: 'networkidle' });
+await p.waitForTimeout(2500);
+console.log(await p.evaluate(() => window.__lt));
+const done = new Promise((r) => cdp.once('Tracing.tracingComplete', r));
+await cdp.send('Tracing.end');
+const { stream } = await done;
+let data = ''; while (true) { const c = await cdp.send('IO.read', { handle: stream }); data += c.data; if (c.eof) break; }
+const ev = JSON.parse(data).traceEvents ?? JSON.parse(data);
+const agg = {};
+for (const e of ev) if (e.dur && e.ph === 'X' && ['Layout','UpdateLayoutTree','Paint','EvaluateScript','FunctionCall','ParseHTML','ParseAuthorStyleSheet','PrePaint','Layerize','RunTask','Commit','HitTest','v8.compile'].includes(e.name)) agg[e.name] = (agg[e.name] ?? 0) + e.dur / 1000;
+console.log(Object.entries(agg).map(([k, v]) => `${k}: ${Math.round(v)}ms`).join('\n'));
+await b.close();
